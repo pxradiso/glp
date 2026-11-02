@@ -1,0 +1,6 @@
+/glp
+/glp-linux-*
+*.AppImage
+*.key
+*.part
+/dist

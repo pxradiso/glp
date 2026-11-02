@@ -1,0 +1,1795 @@
+{
+  "schema": 1,
+  "updated": "2026-10-30T12:30:00Z",
+  "apps": [
+    {
+      "name": "anki",
+      "version": "26.09.3",
+      "summary": "Spaced repetition flashcards",
+      "homepage": "https://apps.ankiweb.net",
+      "license": "AGPL-3.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/ankitects/anki/releases/download/26.09.3/anki-26.09.3-linux-x86_64.tar.zst",
+      "sha256": "d70e01971a7aa190b189927573ee643f2525ff840eafaecc7a8f8cde505650b3",
+      "size": 191305871,
+      "format": "tar.zst",
+      "bins": [
+        "anki"
+      ],
+      "desktop": {
+        "name": "Anki",
+        "comment": "Spaced repetition flashcards",
+        "icon": "anki",
+        "categories": [
+          "Education"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "appimagetool",
+      "version": "continuous",
+      "summary": "Build an AppImage from an AppDir",
+      "homepage": "https://github.com/AppImage/appimagetool",
+      "license": "MIT",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage",
+      "sha256": "95cbe7cce9717fce90c484e34052ee7c7f1d7635b33c12525b4776826a7d29b6",
+      "size": 15092216,
+      "bins": [
+        "usr/bin/appimagetool"
+      ],
+      "desktop": {
+        "name": "appimagetool",
+        "comment": "Tool to generate AppImages from AppDirs",
+        "icon": "appimagetool",
+        "categories": [
+          "Development"
+        ],
+        "terminal": true
+      },
+      "deps": {}
+    },
+    {
+      "name": "appimageupdate",
+      "version": "continuous",
+      "summary": "Update AppImages in place using zsync deltas",
+      "homepage": "https://github.com/AppImage/AppImageUpdate",
+      "license": "MIT",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/AppImage/AppImageUpdate/releases/download/continuous/AppImageUpdate-x86_64.AppImage",
+      "sha256": "963daa01c76efc71a3c55979f2c8d68222b7acc965e3bcc0f2d1bbfa601c3de0",
+      "size": 48634360,
+      "bins": [
+        "usr/bin/AppImageUpdate"
+      ],
+      "desktop": {
+        "name": "AppImageUpdate",
+        "comment": "Update an AppImage in place",
+        "icon": "AppImageUpdate",
+        "categories": [
+          "Utility"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "arduino-ide",
+      "version": "2.3.10",
+      "summary": "Arduino IDE 2 for boards and microcontrollers",
+      "homepage": "https://www.arduino.cc",
+      "license": "AGPL-3.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/arduino/arduino-ide/releases/download/2.3.10/arduino-ide_2.3.10_Linux_64bit.AppImage",
+      "sha256": "79c8590a1744c220d72cbed0ea91c6e2a7f4594292699b2fb3364ebd713cd566",
+      "size": 201750502,
+      "bins": [
+        "arduino-ide"
+      ],
+      "desktop": {
+        "name": "Arduino IDE",
+        "icon": "arduino-ide",
+        "categories": [
+          "Development",
+          "Electronics"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "artcraft",
+      "version": "0.8.1",
+      "summary": "Launcher for the ArtCraft creative suite",
+      "homepage": "https://getartcraft.com/apps",
+      "license": "Apache-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/storytold/craft-launcher/releases/download/v0.8.1/artcraft-launcher-0.8.1-linux-x86_64.AppImage",
+      "sha256": "83cdba12e4f9be2d7556ed53aecb927e0d9b8a30fbceb36a2c8b768d65b4fd83",
+      "size": 12462584,
+      "bins": [
+        "artcraft"
+      ],
+      "desktop": {
+        "name": "ArtCraft",
+        "icon": "artcraft",
+        "categories": [
+          "Utility"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "audacity",
+      "version": "4.0.1",
+      "summary": "Multi-track audio editor and recorder",
+      "homepage": "https://www.audacityteam.org",
+      "license": "GPL-3.0-or-later",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/audacity/audacity/releases/download/Audacity-4.0.1/audacity-linux-4.0.1-x86_64.AppImage",
+      "sha256": "ca2f04f172124d1f18ac608749854c5d31f04ab266a758c348190c05d9b2087c",
+      "size": 73755128,
+      "bins": [
+        "bin/audacity4portable"
+      ],
+      "desktop": {
+        "name": "Audacity",
+        "comment": "Multi-track audio editor",
+        "icon": "audacity4portable",
+        "categories": [
+          "AudioVideo",
+          "Audio",
+          "AudioVideoEditing"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "bitwarden",
+      "version": "2026.10.1",
+      "summary": "Password manager with sync",
+      "homepage": "https://bitwarden.com",
+      "license": "GPL-3.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/bitwarden/clients/releases/download/desktop-v2026.10.1/Bitwarden-2026.10.1-x86_64.AppImage",
+      "sha256": "bc6f918d4a1a99d004215dd824b3b7c031c4102f68074090431010d84439bc23",
+      "size": 157283683,
+      "bins": [
+        "bitwarden"
+      ],
+      "desktop": {
+        "name": "Bitwarden",
+        "icon": "bitwarden",
+        "categories": [
+          "Utility",
+          "Security"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "blender",
+      "version": "5.2.3",
+      "summary": "3D modelling, animation and rendering",
+      "homepage": "https://www.blender.org",
+      "license": "GPL-3.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://download.blender.org/release/Blender5.2/blender-5.2.3-linux-x64.tar.xz",
+      "sha256": "78486c018b4443efe5e75ab54c290ed8c15abafd249b862c2c9ce2530a918eec",
+      "size": 385331224,
+      "bins": [
+        "blender"
+      ],
+      "desktop": {
+        "name": "Blender",
+        "icon": "blender",
+        "categories": [
+          "Graphics",
+          "3DGraphics"
+        ]
+      },
+      "deps": {},
+      "format": "tar.xz"
+    },
+    {
+      "name": "brave-browser",
+      "version": "1.98.60",
+      "summary": "Chromium browser with ad blocking built in",
+      "homepage": "https://brave.com",
+      "license": "MPL-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/brave/brave-browser/releases/download/v1.98.60/brave-browser-1.98.60-linux-amd64.zip",
+      "sha256": "0e49b5f84597fbbefdc8d791900d170d4f3792dc5d38056f6a3e35100706cdc7",
+      "size": 212281241,
+      "bins": [
+        "brave"
+      ],
+      "desktop": {
+        "name": "Brave",
+        "icon": "brave",
+        "categories": [
+          "Network",
+          "WebBrowser"
+        ]
+      },
+      "deps": {},
+      "format": "zip"
+    },
+    {
+      "name": "bruno",
+      "version": "4.3.0",
+      "summary": "Offline API client",
+      "homepage": "https://www.usebruno.com",
+      "license": "MIT",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/usebruno/bruno/releases/download/v4.3.0/bruno_4.3.0_x86_64_linux.AppImage",
+      "sha256": "3c386b1007f66d875c34a2a502063fbad65c66e37409a316ebe518788b1e80bb",
+      "size": 174598148,
+      "bins": [
+        "bruno"
+      ],
+      "desktop": {
+        "name": "Bruno",
+        "comment": "Offline API client",
+        "icon": "bruno",
+        "categories": [
+          "Development"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "cadcraft",
+      "version": "0.13.0",
+      "summary": "2D drafting and computer-aided design",
+      "homepage": "https://getartcraft.com/apps/cadcraft",
+      "license": "Apache-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/storytold/cadcraft/releases/download/v0.13.0/cadcraft-0.13.0-linux-x86_64.AppImage",
+      "sha256": "435ed551849bb0dbd24a0de86b5bb82e9a4e94e06d5890b57a313a7a5fe8d073",
+      "size": 61794808,
+      "bins": [
+        "cadcraft"
+      ],
+      "desktop": {
+        "name": "CADCraft",
+        "icon": "cadcraft",
+        "categories": [
+          "Graphics"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "chromium",
+      "version": "159.0.8129.0",
+      "summary": "Open-source web browser, upstream snapshot build",
+      "homepage": "https://www.chromium.org",
+      "license": "BSD-3-Clause",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://commondatastorage.googleapis.com/chromium-browser-snapshots/Linux_x64/1729013/chrome-linux.zip",
+      "sha256": "cfe2b3f848d2e82af291ec457deb35df7149fc7282f09aaa6c80b4ef6eef0520",
+      "size": 259805773,
+      "format": "zip",
+      "bins": [
+        "chrome"
+      ],
+      "desktop": {
+        "name": "Chromium",
+        "comment": "Open-source web browser",
+        "icon": "chromium",
+        "categories": [
+          "Network",
+          "WebBrowser"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "darktable",
+      "version": "5.6.2",
+      "summary": "RAW photo workflow and darkroom",
+      "homepage": "https://www.darktable.org",
+      "license": "GPL-3.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/darktable-org/darktable/releases/download/release-5.6.2/Darktable-5.6.2-x86_64.AppImage",
+      "sha256": "4b0d1c737a2a18c7d8afb81aa3daaf25930bbe541dda98e6354dabd5c2e4dc36",
+      "size": 178346488,
+      "bins": [
+        "darktable"
+      ],
+      "desktop": {
+        "name": "darktable",
+        "icon": "darktable",
+        "categories": [
+          "Graphics"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "dbeaver",
+      "version": "26.2.3",
+      "summary": "Database client for SQL and NoSQL",
+      "homepage": "https://dbeaver.io",
+      "license": "Apache-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/dbeaver/dbeaver/releases/download/26.2.3/dbeaver-ce-26.2.3-linux-x86_64.tar.gz",
+      "sha256": "9322b9b2ccb28a7084ec4dffe991051c0b3e58e64a738cac5b1de02dd1f56641",
+      "size": 128090733,
+      "format": "tar.gz",
+      "bins": [
+        "dbeaver"
+      ],
+      "desktop": {
+        "name": "DBeaver",
+        "comment": "Database client",
+        "icon": "dbeaver",
+        "categories": [
+          "Development",
+          "Database"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "deckcraft",
+      "version": "0.11.1",
+      "summary": "Presentations and slide shows",
+      "homepage": "https://getartcraft.com/apps/deckcraft",
+      "license": "Apache-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/storytold/deckcraft/releases/download/v0.11.1/deckcraft-0.11.1-linux-x86_64.AppImage",
+      "sha256": "156cb9ef0924bec508524f3a52ba63055a8a74f860bf4588429aefdac6d5fb01",
+      "size": 77003256,
+      "bins": [
+        "deckcraft"
+      ],
+      "desktop": {
+        "name": "DeckCraft",
+        "icon": "deckcraft",
+        "categories": [
+          "Office"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "designcraft",
+      "version": "0.13.0",
+      "summary": "Page layout and desktop publishing",
+      "homepage": "https://getartcraft.com/apps/designcraft",
+      "license": "Apache-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/storytold/designcraft/releases/download/v0.13.0/designcraft-0.13.0-linux-x86_64.AppImage",
+      "sha256": "8d7661b98f6434d5c65e5cd2c7699d4af6a88d104598c48dcb09bfae05f6c62f",
+      "size": 105282040,
+      "bins": [
+        "designcraft"
+      ],
+      "desktop": {
+        "name": "DesignCraft",
+        "icon": "designcraft",
+        "categories": [
+          "Graphics"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "discord",
+      "version": "1.0.167",
+      "summary": "Voice, video and text chat for communities",
+      "homepage": "https://discord.com",
+      "license": "proprietary",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://stable.dl2.discordapp.net/apps/linux/1.0.167/discord-1.0.167.tar.gz",
+      "sha256": "e48fa6696dc8dc19ae4f08ab6abf4f90a329a0251bd78a3b000d0cdfcdfd38c6",
+      "size": 2395987,
+      "format": "tar.gz",
+      "bins": [
+        "discord"
+      ],
+      "desktop": {
+        "name": "Discord",
+        "comment": "All-in-one voice and text chat",
+        "icon": "discord",
+        "categories": [
+          "Network",
+          "InstantMessaging"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "drawio",
+      "version": "32.6.1",
+      "summary": "Diagram and flowchart editor",
+      "homepage": "https://www.drawio.com",
+      "license": "Apache-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/jgraph/drawio-desktop/releases/download/v32.6.1/drawio-x86_64-32.6.1.AppImage",
+      "sha256": "b0b9f76756be5de5b93286e61713f6832956082ff22dd3ad59c2d62eb9eec932",
+      "size": 152526387,
+      "bins": [
+        "drawio"
+      ],
+      "desktop": {
+        "name": "draw.io",
+        "icon": "drawio",
+        "categories": [
+          "Graphics"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "effectcraft",
+      "version": "0.17.0",
+      "summary": "Motion graphics and visual effects",
+      "homepage": "https://getartcraft.com/apps/effectcraft",
+      "license": "Apache-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/storytold/effectcraft/releases/download/v0.17.0/effectcraft-0.17.0-linux-x86_64.AppImage",
+      "sha256": "fe10515bc697edb89f491843018c9199aa50e49cf84e7a629a234817ce2c40fc",
+      "size": 59898360,
+      "bins": [
+        "effectcraft"
+      ],
+      "desktop": {
+        "name": "EffectCraft",
+        "icon": "effectcraft",
+        "categories": [
+          "AudioVideo",
+          "Graphics"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "epic-games-launcher",
+      "version": "0.105.0",
+      "summary": "Epic Games store and launcher",
+      "homepage": "https://store.epicgames.com",
+      "license": "proprietary",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://content-download-egs.distro.on.epicgames.com/Builds/EGLv2/0.105.0%2Bgc9a97d0/Linux/EpicGamesLauncher-x86_64.AppImage",
+      "sha256": "8e4e8a702f4c676f190cf5723d628e19316872122c2acd338d7bc311874cb6dd",
+      "size": 184154616,
+      "bins": [
+        "epic-games-launcher=usr/bin/EpicGamesLauncher"
+      ],
+      "desktop": {
+        "name": "Epic Games Launcher",
+        "comment": "Epic Games store",
+        "icon": "epic-games-launcher",
+        "categories": [
+          "Game"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "etcher",
+      "version": "2.1.9",
+      "summary": "Flash OS images to USB drives",
+      "homepage": "https://etcher.balena.io",
+      "license": "Apache-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/balena-io/etcher/releases/download/v2.1.9/balenaEtcher-linux-x64-2.1.9.zip",
+      "sha256": "21ac9eb72a3f4d737623f85fc5ddd4073febb08b40e601b8051e99634da4fb09",
+      "size": 202150269,
+      "format": "zip",
+      "bins": [
+        "etcher=balena-etcher"
+      ],
+      "desktop": {
+        "name": "balenaEtcher",
+        "comment": "Flash OS images to USB drives",
+        "icon": "etcher",
+        "categories": [
+          "Utility"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "figcraft",
+      "version": "0.11.2",
+      "summary": "Interface design and prototyping",
+      "homepage": "https://getartcraft.com/apps/figcraft",
+      "license": "Apache-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/storytold/figcraft/releases/download/v0.11.2/figcraft-0.11.2-linux-x86_64.AppImage",
+      "sha256": "dd92da8d9b3ec259f81cea3308b1b3961a0579b437ed7f55e8a0a58466a8a986",
+      "size": 84146680,
+      "bins": [
+        "figcraft"
+      ],
+      "desktop": {
+        "name": "FigCraft",
+        "icon": "figcraft",
+        "categories": [
+          "Graphics"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "filmcraft",
+      "version": "0.13.0",
+      "summary": "Non-linear video editor",
+      "homepage": "https://getartcraft.com/apps/filmcraft",
+      "license": "Apache-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/storytold/filmcraft/releases/download/v0.13.0/filmcraft-0.13.0-linux-x86_64.AppImage",
+      "sha256": "d2e604faa0546864485741703a2879c6ba2c55cc7f5cc4ba7d7dac1443a1a6ee",
+      "size": 94710264,
+      "bins": [
+        "filmcraft"
+      ],
+      "desktop": {
+        "name": "FilmCraft",
+        "icon": "filmcraft",
+        "categories": [
+          "AudioVideo"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "firefox",
+      "version": "159.0",
+      "summary": "Mozilla browser, the open web reference",
+      "homepage": "https://www.mozilla.org/firefox",
+      "license": "MPL-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/159.0/linux-x86_64/en-US/firefox-159.0.tar.xz",
+      "sha256": "54536fcd120af484d4c56272a5a1cf4af57b9c713d1a3b1e775da192dd541fcd",
+      "size": 90055416,
+      "bins": [
+        "firefox"
+      ],
+      "desktop": {
+        "name": "Firefox",
+        "icon": "firefox",
+        "categories": [
+          "Network",
+          "WebBrowser"
+        ]
+      },
+      "deps": {},
+      "format": "tar.xz"
+    },
+    {
+      "name": "flameshot",
+      "version": "14.0.0",
+      "summary": "Screenshot tool with annotation",
+      "homepage": "https://flameshot.org",
+      "license": "GPL-3.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/flameshot-org/flameshot/releases/download/v14.0.0/flameshot-v14.0+git0.da6121bd-artifact-appimage-x86_64.zip",
+      "sha256": "93ad1261ccae9387d35fd39a8b9428451163dfcba3f32658d80ec02ab0597789",
+      "size": 57437346,
+      "format": "zip",
+      "bins": [
+        "flameshot"
+      ],
+      "desktop": {
+        "name": "Flameshot",
+        "comment": "Screenshot tool with annotation",
+        "icon": "flameshot",
+        "categories": [
+          "Graphics"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "floorp",
+      "version": "12.21.0",
+      "summary": "Firefox fork with a vertical tab sidebar",
+      "homepage": "https://floorp.app",
+      "license": "MPL-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/Floorp-Projects/Floorp/releases/download/v12.21.0/floorp-linux-x86_64.tar.xz",
+      "sha256": "e3ff309b319ec50556c1d9cd4638fc443524160ac95c36febad4a359d3ffbcd4",
+      "size": 108241868,
+      "bins": [
+        "floorp"
+      ],
+      "desktop": {
+        "name": "Floorp",
+        "icon": "floorp",
+        "categories": [
+          "Network",
+          "WebBrowser"
+        ]
+      },
+      "deps": {},
+      "format": "tar.xz"
+    },
+    {
+      "name": "fnf-game",
+      "version": "0.8.6",
+      "summary": "Rhythm game with a story mode",
+      "homepage": "https://ninja-muffin24.itch.io/funkin",
+      "license": "Apache-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "format": "zip",
+      "icon": {
+        "path": "assets/images/icons/icon-bf.png",
+        "crop": [
+          0,
+          0,
+          150,
+          150
+        ]
+      },
+      "workdir": true,
+      "itch": {
+        "page": "https://ninja-muffin24.itch.io/funkin",
+        "upload": 3004226
+      },
+      "sha256": "ce80728ac55aa8b8b966840d769a0b5501b8eb81fdf9e5de7cac7ea3234100dc",
+      "size": 822428806,
+      "bins": [
+        "funkin=Funkin"
+      ],
+      "desktop": {
+        "name": "Friday Night Funkin'",
+        "comment": "Rhythm game with a story mode",
+        "icon": "",
+        "categories": [
+          "Game"
+        ]
+      },
+      "deps": {
+        "debian": [
+          "vlc"
+        ],
+        "fedora": [
+          "vlc"
+        ],
+        "arch": [
+          "vlc"
+        ],
+        "suse": [
+          "vlc"
+        ]
+      }
+    },
+    {
+      "name": "freecad",
+      "version": "1.1.4",
+      "summary": "Parametric 3D CAD modeller",
+      "homepage": "https://www.freecad.org",
+      "license": "LGPL-2.1",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/FreeCAD/FreeCAD/releases/download/1.1.4/FreeCAD_1.1.4-Linux-x86_64-py311.AppImage",
+      "sha256": "f6dc6ba676e5ac96a565ebc8d657232f94c6158e85b4352141bd1a46f6b43434",
+      "size": 820812280,
+      "bins": [
+        "freecad"
+      ],
+      "desktop": {
+        "name": "FreeCAD",
+        "comment": "Parametric 3D CAD modeller",
+        "icon": "freecad",
+        "categories": [
+          "Graphics",
+          "Engineering"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "ghostty",
+      "version": "1.3.1",
+      "summary": "Fast terminal emulator",
+      "homepage": "https://ghostty.org",
+      "license": "MIT",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/pkgforge-dev/ghostty-appimage/releases/download/v1.3.1/Ghostty-1.3.1-x86_64.AppImage",
+      "sha256": "fde48d2b716afd1978766879bbf1aae30dd305e8ad86a1037a2614a14d82dc28",
+      "size": 48876785,
+      "bins": [
+        "ghostty"
+      ],
+      "desktop": {
+        "name": "Ghostty",
+        "comment": "Fast terminal emulator",
+        "icon": "com.mitchellh.ghostty",
+        "categories": [
+          "System",
+          "TerminalEmulator"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "gimp",
+      "version": "3.0.8",
+      "summary": "Photo and image editor",
+      "homepage": "https://www.gimp.org",
+      "license": "GPL-3.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://download.gimp.org/gimp/v3.0/linux/GIMP-3.0.8-x86_64.AppImage",
+      "sha256": "d19a8f83e06f9ec6a00927d895b822c7c8490ec19a6cb9f369498fdfdbcbea34",
+      "size": 225053176,
+      "bins": [
+        "gimp"
+      ],
+      "desktop": {
+        "name": "GIMP",
+        "icon": "gimp",
+        "categories": [
+          "Graphics"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "gridcraft",
+      "version": "0.12.1",
+      "summary": "Spreadsheets and data analysis",
+      "homepage": "https://getartcraft.com/apps/gridcraft",
+      "license": "Apache-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/storytold/gridcraft/releases/download/v0.12.1/gridcraft-0.12.1-linux-x86_64.AppImage",
+      "sha256": "eb2de0401e1089d6f76c07b884b82d71c44e7455efae2014cc347a8a0c9f1277",
+      "size": 19864056,
+      "bins": [
+        "gridcraft"
+      ],
+      "desktop": {
+        "name": "GridCraft",
+        "icon": "gridcraft",
+        "categories": [
+          "Office"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "helium-browser",
+      "version": "0.20.1.1",
+      "summary": "Privacy-focused Chromium browser",
+      "homepage": "https://helium.computer",
+      "license": "GPL-3.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/imputnet/helium-linux/releases/download/0.20.1.1/helium-0.20.1.1-x86_64.AppImage",
+      "sha256": "d4b789b25d0a9ae12c76671e444e8a85edcf828e0419c678d18c41fb1ac3030e",
+      "size": 158005752,
+      "bins": [
+        "helium"
+      ],
+      "desktop": {
+        "name": "Helium",
+        "comment": "Privacy-focused Chromium browser",
+        "icon": "helium",
+        "categories": [
+          "Network",
+          "WebBrowser"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "heroic",
+      "version": "2.22.4",
+      "summary": "Epic and GOG games on Linux",
+      "homepage": "https://heroicgameslauncher.com",
+      "license": "GPL-3.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher/releases/download/v2.22.4/Heroic-2.22.4-linux-x64.tar.xz",
+      "sha256": "81497c4e67d42905da5839a32be053c011eae35fb1fd5ec9441249b238d8f99b",
+      "size": 113294664,
+      "bins": [
+        "heroic"
+      ],
+      "desktop": {
+        "name": "Heroic",
+        "icon": "heroic",
+        "categories": [
+          "Game"
+        ]
+      },
+      "deps": {},
+      "format": "tar.xz"
+    },
+    {
+      "name": "joplin",
+      "version": "3.7.21",
+      "summary": "Notes and to-do lists, synced and searchable",
+      "homepage": "https://joplinapp.org",
+      "license": "MIT",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/laurent22/joplin/releases/download/v3.7.21/Joplin-3.7.21.AppImage",
+      "sha256": "5d202dcaca31e14206826aa3f04125e7c218dbc3dc3d98479d811efbd6b856c1",
+      "size": 201462481,
+      "bins": [
+        "joplin"
+      ],
+      "desktop": {
+        "name": "Joplin",
+        "icon": "joplin",
+        "categories": [
+          "Office"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "kdenlive",
+      "version": "26.08.2",
+      "summary": "Video editor for cutting and finishing",
+      "homepage": "https://kdenlive.org",
+      "license": "GPL-3.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://download.kde.org/stable/kdenlive/26.08/linux/kdenlive-26.08.2-x86_64.AppImage",
+      "sha256": "3194c0979bcfb7ec4a0b33ebc05178a51cffdf5b180c3a89bcf4da94e025bc78",
+      "size": 215427576,
+      "bins": [
+        "kdenlive"
+      ],
+      "desktop": {
+        "name": "Kdenlive",
+        "icon": "kdenlive",
+        "categories": [
+          "AudioVideo",
+          "Video"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "keepassxc",
+      "version": "2.8.0",
+      "summary": "Offline password manager",
+      "homepage": "https://keepassxc.org",
+      "license": "GPL-2.0-or-later",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/keepassxreboot/keepassxc/releases/download/2.8.0/KeePassXC-2.8.0-1-x86_64.AppImage",
+      "sha256": "3ab1bfbb422272334b48057e6bfc984c839375d9a1cd9350c4ea62ca0b55ca5f",
+      "size": 52062712,
+      "bins": [
+        "usr/bin/keepassxc"
+      ],
+      "desktop": {
+        "name": "KeePassXC",
+        "comment": "Password manager",
+        "icon": "keepassxc",
+        "categories": [
+          "Utility",
+          "Security"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "krita",
+      "version": "6.0.4.1",
+      "summary": "Painting and illustration studio",
+      "homepage": "https://krita.org",
+      "license": "GPL-3.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://download.kde.org/stable/krita/6.0.4.1/krita-6.0.4.1-x86_64.AppImage",
+      "sha256": "9ab5a78927c7369f8665df4d85f186fcbae46501968715aac0685776e1399f91",
+      "size": 385726968,
+      "bins": [
+        "krita"
+      ],
+      "desktop": {
+        "name": "Krita",
+        "icon": "krita",
+        "categories": [
+          "Graphics"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "lazygit",
+      "version": "0.66.2",
+      "summary": "Terminal UI for git",
+      "homepage": "https://github.com/jesseduffield/lazygit",
+      "license": "MIT",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/jesseduffield/lazygit/releases/download/v0.66.2/lazygit_0.66.2_linux_x86_64.tar.gz",
+      "sha256": "158efc9ddfa1241fab5fb3526bb442c8dc6c4b1904d73213b9e4e93e03c52034",
+      "size": 7332397,
+      "format": "tar.gz",
+      "bins": [
+        "lazygit"
+      ],
+      "desktop": {
+        "name": "Lazygit",
+        "comment": "Terminal UI for git",
+        "icon": "lazygit",
+        "categories": [
+          "Development"
+        ],
+        "terminal": true
+      },
+      "deps": {}
+    },
+    {
+      "name": "librewolf",
+      "version": "158.0.1-2",
+      "summary": "Firefox fork tuned for privacy",
+      "homepage": "https://librewolf.net",
+      "license": "MPL-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://dl.librewolf.net/librewolf/158.0.1-2/librewolf-158.0.1-2-linux-x86_64-appimage.AppImage",
+      "sha256": "9225fd93235ea366f6f55b1d5f5596dde7b3f6b3bae7248d967d6abffba3e07b",
+      "size": 147728888,
+      "bins": [
+        "librewolf"
+      ],
+      "desktop": {
+        "name": "LibreWolf",
+        "icon": "librewolf",
+        "categories": [
+          "Network",
+          "WebBrowser"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "lightcraft",
+      "version": "0.14.0",
+      "summary": "Photo library and raw developer",
+      "homepage": "https://getartcraft.com/apps/lightcraft",
+      "license": "Apache-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/storytold/lightcraft/releases/download/v0.14.0/lightcraft-0.14.0-linux-x86_64.AppImage",
+      "sha256": "d6e02cc2da7afb11602f6ec08f0ac8a60d73070a54960680e97b92a0a17d3d77",
+      "size": 104929784,
+      "bins": [
+        "lightcraft"
+      ],
+      "desktop": {
+        "name": "LightCraft",
+        "icon": "lightcraft",
+        "categories": [
+          "Graphics"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "musescore",
+      "version": "4.7.6",
+      "summary": "Scorewriter for composing and printing sheet music",
+      "homepage": "https://musescore.org",
+      "license": "GPL-3.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/musescore/MuseScore/releases/download/v4.7.6/MuseScore-Studio-4.7.6.261022093-x86_64.AppImage",
+      "sha256": "5fcbd1f292270eca5c3867d56b767c31a173a155216a415f5caee22553f8e7a6",
+      "size": 192616952,
+      "bins": [
+        "mscore4portable"
+      ],
+      "desktop": {
+        "name": "MuseScore Studio",
+        "icon": "musescore",
+        "categories": [
+          "AudioVideo",
+          "Audio"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "neovim",
+      "version": "0.12.6",
+      "summary": "Modal text editor for the terminal",
+      "homepage": "https://neovim.io",
+      "license": "Apache-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/neovim/neovim/releases/download/v0.12.6/nvim-linux-x86_64.appimage",
+      "sha256": "b644d034746aed32f4e918be9fc6147408ce4ecd360fedd7130da543c35f29fb",
+      "size": 11454968,
+      "bins": [
+        "nvim"
+      ],
+      "desktop": {
+        "name": "Neovim",
+        "comment": "Modal text editor",
+        "icon": "nvim",
+        "categories": [
+          "Development",
+          "TextEditor"
+        ],
+        "terminal": true
+      },
+      "deps": {}
+    },
+    {
+      "name": "obsidian",
+      "version": "1.14.5",
+      "summary": "Markdown knowledge base and note taking",
+      "homepage": "https://obsidian.md",
+      "license": "proprietary",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/obsidianmd/obsidian-releases/releases/download/v1.14.5/Obsidian-1.14.5.AppImage",
+      "sha256": "306815f60d15dea8610d72886ef5e50ef4b7e7185e952ffc3bb21bee1582d952",
+      "size": 139238201,
+      "bins": [
+        "obsidian"
+      ],
+      "desktop": {
+        "name": "Obsidian",
+        "icon": "obsidian",
+        "categories": [
+          "Office"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "onlyoffice",
+      "version": "10.0.0",
+      "summary": "Office suite with strong docx compatibility",
+      "homepage": "https://www.onlyoffice.com",
+      "license": "AGPL-3.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/ONLYOFFICE/DesktopEditors/releases/download/v10.0.0/DesktopEditors-x86_64.AppImage",
+      "sha256": "3e4668d44f6881d1d8873b38ea9c9fd81b9c77132facdb735bfebfe960edb745",
+      "size": 425810424,
+      "bins": [
+        "onlyoffice-desktopeditors"
+      ],
+      "desktop": {
+        "name": "ONLYOFFICE",
+        "icon": "onlyoffice",
+        "categories": [
+          "Office"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "pdfcraft",
+      "version": "0.14.0",
+      "summary": "Read, organize and secure PDF files",
+      "homepage": "https://getartcraft.com/apps/pdfcraft",
+      "license": "Apache-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/storytold/pdfcraft/releases/download/v0.14.0/pdfcraft-0.14.0-linux-x86_64.AppImage",
+      "sha256": "a115132eb9aa5eed510a4e85aa5785c81e6690769203415506a1a4b2dd011190",
+      "size": 84122104,
+      "bins": [
+        "pdfcraft"
+      ],
+      "desktop": {
+        "name": "PdfCraft",
+        "icon": "pdfcraft",
+        "categories": [
+          "Office"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "photocraft",
+      "version": "0.16.0",
+      "summary": "Image editor with layers and curves",
+      "homepage": "https://getartcraft.com/apps/photocraft",
+      "license": "Apache-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/storytold/photocraft/releases/download/v0.16.0/photocraft-0.16.0-linux-x86_64.AppImage",
+      "sha256": "fc670139091e661e948a6de1ff2219a6dd04232e6ac8616349ee238a7a49d54e",
+      "size": 83327480,
+      "bins": [
+        "photocraft"
+      ],
+      "desktop": {
+        "name": "PhotoCraft",
+        "icon": "photocraft",
+        "categories": [
+          "Graphics"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "prismlauncher",
+      "version": "11.1.1",
+      "summary": "Minecraft launcher with modpack support",
+      "homepage": "https://prismlauncher.org",
+      "license": "GPL-3.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/PrismLauncher/PrismLauncher/releases/download/11.1.1/PrismLauncher-Linux-x86_64.AppImage",
+      "sha256": "bb81038c56a09e944659e4b808dbfbc52d52d5e3a3ffe32216689a3ca1508d3d",
+      "size": 107577656,
+      "bins": [
+        "prismlauncher"
+      ],
+      "desktop": {
+        "name": "Prism Launcher",
+        "icon": "prismlauncher",
+        "categories": [
+          "Game"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "qbittorrent",
+      "version": "5.3.0",
+      "summary": "BitTorrent client with a web interface",
+      "homepage": "https://www.qbittorrent.org",
+      "license": "GPL-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/qbittorrent/qBittorrent/releases/download/release-5.3.0/qbittorrent-5.3.0_x86_64.AppImage",
+      "sha256": "1c64f2e95740be41f2822f909f56e4dd0da2637f312098a06da113d7add7418b",
+      "size": 109939192,
+      "bins": [
+        "qbittorrent"
+      ],
+      "desktop": {
+        "name": "qBittorrent",
+        "icon": "qbittorrent",
+        "categories": [
+          "Network",
+          "FileTransfer"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "rpi-imager",
+      "version": "2.0.12",
+      "summary": "Write OS images to SD cards",
+      "homepage": "https://www.raspberrypi.com/software/",
+      "license": "Apache-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/raspberrypi/rpi-imager/releases/download/v2.0.12/Raspberry_Pi_Imager-v2.0.12-desktop-x86_64.AppImage",
+      "sha256": "9589b1619b12008de8d2ed9e928d8d58901c1013f3305091c5cc238a5c9691e5",
+      "size": 35154424,
+      "bins": [
+        "rpi-imager"
+      ],
+      "desktop": {
+        "name": "Raspberry Pi Imager",
+        "comment": "Write OS images to SD cards",
+        "icon": "rpi-imager",
+        "categories": [
+          "Utility"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "shotcut",
+      "version": "26.9.27",
+      "summary": "Video editor with wide format support",
+      "homepage": "https://shotcut.org",
+      "license": "GPL-3.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/mltframework/shotcut/releases/download/v26.9.27/shotcut-linux-x86_64-26.9.27.AppImage",
+      "sha256": "a3da4b409d29b31294fe5097bb8c3f031d1e2cb0c14ff71717d1a7d4658e62de",
+      "size": 217801920,
+      "bins": [
+        "shotcut"
+      ],
+      "desktop": {
+        "name": "Shotcut",
+        "icon": "shotcut",
+        "categories": [
+          "AudioVideo",
+          "Video"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "soundcraft",
+      "version": "0.13.1",
+      "summary": "Audio recording, editing and mixing",
+      "homepage": "https://getartcraft.com/apps/soundcraft",
+      "license": "Apache-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/storytold/soundcraft/releases/download/v0.13.1/soundcraft-0.13.1-linux-x86_64.AppImage",
+      "sha256": "607f4a13f929b5f237de61e9040be4bfc86a06644bf2a103c73f7b9c84d3bf19",
+      "size": 17123832,
+      "bins": [
+        "soundcraft"
+      ],
+      "desktop": {
+        "name": "SoundCraft",
+        "icon": "soundcraft",
+        "categories": [
+          "AudioVideo",
+          "Audio"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "spotify",
+      "version": "1.2.95.453.g0eeebbed",
+      "summary": "Music streaming client",
+      "homepage": "https://www.spotify.com",
+      "license": "proprietary",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://repository.spotify.com/pool/non-free/s/spotify-client/spotify-client_1.2.95.453.g0eeebbed_amd64.deb",
+      "sha256": "256e2eb1ec96fbc0c51afab247298e4e6eabfabbafafd4617584f44cca2fb31f",
+      "size": 171638972,
+      "format": "deb",
+      "bins": [
+        "usr/bin/spotify"
+      ],
+      "desktop": {
+        "name": "Spotify",
+        "comment": "Music streaming client",
+        "icon": "spotify",
+        "categories": [
+          "Audio",
+          "Music",
+          "Player"
+        ]
+      },
+      "deps": {
+        "fedora": [
+          "gtk3",
+          "nss",
+          "alsa-lib",
+          "libXScrnSaver",
+          "libXtst",
+          "mesa-libgbm",
+          "xdg-utils",
+          "libappindicator-gtk3"
+        ],
+        "debian": [
+          "libgtk-3-0",
+          "libnss3",
+          "libasound2",
+          "libxss1",
+          "libxtst6",
+          "libgbm1",
+          "xdg-utils",
+          "libayatana-appindicator3-1"
+        ],
+        "arch": [
+          "gtk3",
+          "nss",
+          "alsa-lib",
+          "libxss",
+          "libxtst",
+          "mesa",
+          "xdg-utils",
+          "libappindicator-gtk3"
+        ],
+        "suse": [
+          "gtk3",
+          "mozilla-nss",
+          "alsa-lib",
+          "libXScrnSaver1",
+          "libXtst6",
+          "libgbm1",
+          "xdg-utils",
+          "libappindicator3-1"
+        ]
+      }
+    },
+    {
+      "name": "steam",
+      "version": "1.0.0.87",
+      "summary": "Game store and launcher",
+      "homepage": "https://store.steampowered.com",
+      "license": "proprietary",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://repo.steampowered.com/steam/archive/stable/steam_latest.deb",
+      "sha256": "765aba9a0ed339a50226ceb614fcc9879a991ba184098bc8de920efb12c714a4",
+      "size": 20379390,
+      "format": "deb",
+      "bins": [
+        "usr/bin/steam"
+      ],
+      "desktop": {
+        "name": "Steam",
+        "comment": "Application for managing and playing games on Steam",
+        "icon": "steam",
+        "categories": [
+          "Network",
+          "FileTransfer",
+          "Game"
+        ]
+      },
+      "deps": {
+        "debian": [
+          "curl",
+          "xz-utils",
+          "zenity",
+          "python3",
+          "ca-certificates"
+        ],
+        "fedora": [
+          "curl",
+          "xz",
+          "zenity",
+          "python3",
+          "ca-certificates"
+        ],
+        "arch": [
+          "curl",
+          "xz",
+          "zenity",
+          "python",
+          "ca-certificates"
+        ],
+        "suse": [
+          "curl",
+          "xz",
+          "zenity",
+          "python3",
+          "ca-certificates"
+        ]
+      }
+    },
+    {
+      "name": "telegram",
+      "version": "7.3.3",
+      "summary": "Cloud messenger with desktop client",
+      "homepage": "https://telegram.org",
+      "license": "GPL-3.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/telegramdesktop/tdesktop/releases/download/v7.3.3/td-setup-linux-x64-7.3.3.tar.xz",
+      "sha256": "7bcd524ea17f3eefda95b2ffdb3d5b355e7f727d44045a6ff2316cd077355df9",
+      "size": 86871280,
+      "bins": [
+        "telegram=Telegram"
+      ],
+      "desktop": {
+        "name": "Telegram",
+        "icon": "telegram",
+        "categories": [
+          "Network",
+          "Chat"
+        ]
+      },
+      "deps": {},
+      "format": "tar.xz"
+    },
+    {
+      "name": "thunderbird",
+      "version": "159.0",
+      "summary": "Mozilla mail and calendar client",
+      "homepage": "https://www.thunderbird.net",
+      "license": "MPL-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://download-installer.cdn.mozilla.net/pub/thunderbird/releases/159.0/linux-x86_64/en-US/thunderbird-159.0.tar.xz",
+      "sha256": "a7cb57c4dfec66e566e1cbbdcf7e0aab67aad7262dd0ab38b4f4e8df2b771074",
+      "size": 87950588,
+      "format": "tar.xz",
+      "bins": [
+        "thunderbird"
+      ],
+      "desktop": {
+        "name": "Thunderbird",
+        "comment": "Email, calendar and newsgroups",
+        "icon": "thunderbird",
+        "categories": [
+          "Network",
+          "Email"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "ungoogled-chromium",
+      "version": "156.0.8078.47-1",
+      "summary": "Chromium without Google integration",
+      "homepage": "https://github.com/ungoogled-software/ungoogled-chromium-portablelinux",
+      "license": "BSD-3-Clause",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/ungoogled-software/ungoogled-chromium-portablelinux/releases/download/156.0.8078.47-1/ungoogled-chromium-156.0.8078.47-1-x86_64.AppImage",
+      "sha256": "05568a8af14ddd73a926299374d9869f04c75defeadb7cfa5365357eea8502ed",
+      "size": 209447416,
+      "bins": [
+        "ungoogled-chromium"
+      ],
+      "desktop": {
+        "name": "ungoogled-chromium",
+        "comment": "Chromium without Google integration",
+        "icon": "chromium",
+        "categories": [
+          "Network",
+          "WebBrowser"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "vectorcraft",
+      "version": "0.17.0",
+      "summary": "Vector illustration and design",
+      "homepage": "https://getartcraft.com/apps/vectorcraft",
+      "license": "Apache-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/storytold/vectorcraft/releases/download/v0.17.0/vectorcraft-0.17.0-linux-x86_64.AppImage",
+      "sha256": "e4984887bdb980196dea241e86831e54613ccfd434e4eb74b7498ada2bb549e3",
+      "size": 122190328,
+      "bins": [
+        "vectorcraft"
+      ],
+      "desktop": {
+        "name": "VectorCraft",
+        "icon": "vectorcraft",
+        "categories": [
+          "Graphics"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "vesktop",
+      "version": "1.6.8",
+      "summary": "Discord client with Vencord plugins",
+      "homepage": "https://vesktop.vencord.dev",
+      "license": "GPL-3.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/Vencord/Vesktop/releases/download/v1.6.8/Vesktop-1.6.8.AppImage",
+      "sha256": "1757426d937a6987ae4306e74fac2fe6d3c4ebd4a8895ce3ad6c6ee7ce610d84",
+      "size": 118842712,
+      "bins": [
+        "vesktop"
+      ],
+      "desktop": {
+        "name": "Vesktop",
+        "comment": "Discord client with Vencord plugins",
+        "icon": "vesktop",
+        "categories": [
+          "Network",
+          "InstantMessaging"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "vinegarhq",
+      "version": "1.9.4",
+      "summary": "Run Roblox Studio on Linux",
+      "homepage": "https://vinegarhq.org",
+      "license": "GPL-3.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/vinegarhq/vinegar/releases/download/v1.9.4/vinegar-v1.9.4.tar.xz",
+      "sha256": "b71f1868051ec99d05fb0e138b04939e2704f89ecc6f9ad3aa0e031b05bf6568",
+      "size": 4484776,
+      "format": "tar.xz",
+      "bins": [
+        "vinegar"
+      ],
+      "desktop": {
+        "name": "Vinegar",
+        "icon": "org.vinegarhq.Vinegar",
+        "categories": [
+          "Development"
+        ]
+      },
+      "deps": {
+        "fedora": [
+          "gtk4-devel",
+          "libadwaita-devel",
+          "vulkan-loader-devel",
+          "gcc-c++",
+          "glib2-devel",
+          "pkgconf-pkg-config",
+          "gettext"
+        ],
+        "debian": [
+          "libgtk-4-dev",
+          "libadwaita-1-dev",
+          "libvulkan-dev",
+          "g++",
+          "libglib2.0-dev",
+          "pkg-config",
+          "gettext"
+        ],
+        "suse": [
+          "gtk4-devel",
+          "libadwaita-devel",
+          "vulkan-devel",
+          "gcc-c++",
+          "glib2-devel",
+          "pkg-config",
+          "gettext"
+        ],
+        "arch": [
+          "gtk4",
+          "libadwaita",
+          "vulkan-headers",
+          "vulkan-icd-loader",
+          "gcc",
+          "pkgconf",
+          "glib2"
+        ]
+      },
+      "build": {
+        "commands": [
+          [
+            "make",
+            "install",
+            "PREFIX=/usr",
+            "DESTDIR={dest}",
+            "GO_LDFLAGS=-s -w -X main.LocaleDir={final}/usr/share/locale"
+          ]
+        ]
+      }
+    },
+    {
+      "name": "vscode",
+      "version": "1.143.1",
+      "summary": "Code editor with debugging and Git built in",
+      "homepage": "https://code.visualstudio.com",
+      "license": "proprietary",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://vscode.download.prss.microsoft.com/dbazure/download/stable/e646868227c3e3a9e3f24277c8c7220be42c0be7/code-stable-x64-1792691793.tar.gz",
+      "sha256": "48f658052e54e020a1c1be7b37ac0f9ae39f07e8ccda805c63f053cfda72b2be",
+      "size": 350844741,
+      "format": "tar.gz",
+      "bins": [
+        "bin/code"
+      ],
+      "desktop": {
+        "name": "Visual Studio Code",
+        "icon": "vscode",
+        "categories": [
+          "Development",
+          "TextEditor"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "vscodium",
+      "version": "1.143.17232",
+      "summary": "VS Code without the telemetry",
+      "homepage": "https://vscodium.com",
+      "license": "MIT",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/VSCodium/vscodium/releases/download/1.143.17232/VSCodium-1.143.17232-anylinux-x86_64.AppImage",
+      "sha256": "6f4e6192624f345c6f8f7fe543e6c98c6c928da63a32f3d48e4a49c2a44f2c95",
+      "size": 194749973,
+      "bins": [
+        "codium"
+      ],
+      "desktop": {
+        "name": "VSCodium",
+        "comment": "Code editor without telemetry",
+        "icon": "vscodium",
+        "categories": [
+          "Development",
+          "TextEditor"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "winboat",
+      "version": "0.9.2",
+      "summary": "Run Windows apps on Linux",
+      "homepage": "https://winboat.app",
+      "license": "MIT",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/winboat-org/winboat/releases/download/v0.9.2/winboat-0.9.2-x86_64.AppImage",
+      "sha256": "6336843b911e344bf6182ebaea2d42e8960ef11820a0cc84239a848ba0a140e4",
+      "size": 161247052,
+      "bins": [
+        "winboat"
+      ],
+      "desktop": {
+        "name": "WinBoat",
+        "comment": "Windows for Penguins",
+        "icon": "winboat",
+        "categories": [
+          "Utility"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "wordcraft",
+      "version": "0.11.0",
+      "summary": "Word processing and documents",
+      "homepage": "https://getartcraft.com/apps/wordcraft",
+      "license": "Apache-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/storytold/wordcraft/releases/download/v0.11.0/wordcraft-0.11.0-linux-x86_64.AppImage",
+      "sha256": "d92d5d37752b95f08904cc8328f3a73c2979361337ff260d23518f4024cd5c64",
+      "size": 98503160,
+      "bins": [
+        "wordcraft"
+      ],
+      "desktop": {
+        "name": "WordCraft",
+        "icon": "wordcraft",
+        "categories": [
+          "Office"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "zed",
+      "version": "1.25.3",
+      "summary": "Fast collaborative code editor",
+      "homepage": "https://zed.dev",
+      "license": "GPL-3.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/zed-industries/zed/releases/download/v1.25.3/zed-linux-x86_64.tar.gz",
+      "sha256": "35f9115acd8b4c3bea6ed20f7c9b6ec8f1d2c2dd5a1cc438d552167b5ed4b342",
+      "size": 89793425,
+      "format": "tar.gz",
+      "bins": [
+        "bin/zed"
+      ],
+      "desktop": {
+        "name": "Zed",
+        "comment": "Fast collaborative code editor",
+        "icon": "zed",
+        "categories": [
+          "Development",
+          "TextEditor"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "zen-browser",
+      "version": "1.23.4b",
+      "summary": "Firefox-based browser with a focus on calm browsing",
+      "homepage": "https://zen-browser.app",
+      "license": "MPL-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/zen-browser/desktop/releases/download/1.23.4b/zen-x86_64.AppImage",
+      "sha256": "0acae554219848792e7f463af7b31aa118e40c44a1e33698b6119e71ba4fecb6",
+      "size": 147977696,
+      "bins": [
+        "zen-browser"
+      ],
+      "desktop": {
+        "name": "Zen Browser",
+        "icon": "zen",
+        "categories": [
+          "Network",
+          "WebBrowser"
+        ]
+      },
+      "deps": {}
+    }
+  ]
+}

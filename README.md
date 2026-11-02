@@ -1,7 +1,9 @@
 # glp
 
-Install desktop apps on Ubuntu, Debian, Fedora (and friends) with one command.
-No daemon, no FUSE, no root by default, no runtime to download.
+glp is a Go CLI that installs Linux desktop apps from a signed catalog.
+
+Install desktop apps on Ubuntu, Debian, Fedora and friends with one command.
+No daemon, no FUSE, no root by default, no runtime to install.
 
 ```console
 $ glp install appimagetool
@@ -21,27 +23,123 @@ run: appimagetool
 
 ## What it does
 
-`glp` is a resolver and installer for AppImages:
+You type a name. glp looks it up in a signed catalog, shows the version, size and
+checksum, then downloads the file straight from the vendor. Nothing is mirrored
+or repackaged, so you get the same bytes upstream publishes.
 
-1. looks the app up in a **signed** catalog,
-2. shows you the exact URL, checksum and size,
-3. downloads it and verifies the SHA-256,
-4. extracts it (no FUSE, no mount) into `~/.local/opt/glp/<app>/<version>`,
-5. symlinks the binaries into `~/.local/bin`, writes a `.desktop` file and an icon,
-6. installs the system packages it declares, named in the confirmation and
-   covered by the same yes.
+Then it takes care of the boring part:
 
-Updates are atomic (`current` symlink swap) and the previous version is kept
-until you remove the app or run `glp clean`.
+1. checks the SHA-256, and deletes a file that does not match instead of running it
+2. unpacks the archive into `~/.local/opt/glp/<app>/<version>`, no FUSE, no mount
+3. puts the launcher in `~/.local/bin`, with a menu entry and an icon next to it
+4. if the app needs system packages to start, it names them in the prompt and
+   installs them with the same yes
+
+Upgrades work the same way: the new version is unpacked next to the old one, a
+symlink is swapped, and the old tree stays on disk until you remove the app.
+
+## What is in the catalog
+
+65 apps at the moment. This table is a snapshot; the signed catalog is the real
+list, and `glp search` reads it live.
+
+| App | What it is |
+|---|---|
+| `anki` | Spaced repetition flashcards |
+| `appimagetool` | Build an AppImage from an AppDir |
+| `appimageupdate` | Update AppImages in place using zsync deltas |
+| `arduino-ide` | Arduino IDE 2 for boards and microcontrollers |
+| `artcraft` | Launcher for the ArtCraft creative suite |
+| `audacity` | Multi-track audio editor and recorder |
+| `bitwarden` | Password manager with sync |
+| `blender` | 3D modelling, animation and rendering |
+| `brave-browser` | Chromium browser with ad blocking built in |
+| `bruno` | Offline API client |
+| `cadcraft` | 2D drafting and computer-aided design |
+| `chromium` | Open-source web browser, upstream snapshot build |
+| `darktable` | RAW photo workflow and darkroom |
+| `dbeaver` | Database client for SQL and NoSQL |
+| `deckcraft` | Presentations and slide shows |
+| `designcraft` | Page layout and desktop publishing |
+| `discord` | Voice, video and text chat for communities |
+| `drawio` | Diagram and flowchart editor |
+| `effectcraft` | Motion graphics and visual effects |
+| `epic-games-launcher` | Epic Games store and launcher |
+| `etcher` | Flash OS images to USB drives |
+| `figcraft` | Interface design and prototyping |
+| `filmcraft` | Non-linear video editor |
+| `firefox` | Mozilla browser, the open web reference |
+| `flameshot` | Screenshot tool with annotation |
+| `floorp` | Firefox fork with a vertical tab sidebar |
+| `fnf-game` | Rhythm game with a story mode |
+| `freecad` | Parametric 3D CAD modeller |
+| `ghostty` | Fast terminal emulator |
+| `gimp` | Photo and image editor |
+| `gridcraft` | Spreadsheets and data analysis |
+| `helium-browser` | Privacy-focused Chromium browser |
+| `heroic` | Epic and GOG games on Linux |
+| `joplin` | Notes and to-do lists, synced and searchable |
+| `kdenlive` | Video editor for cutting and finishing |
+| `keepassxc` | Offline password manager |
+| `krita` | Painting and illustration studio |
+| `lazygit` | Terminal UI for git |
+| `librewolf` | Firefox fork tuned for privacy |
+| `lightcraft` | Photo library and raw developer |
+| `musescore` | Scorewriter for composing and printing sheet music |
+| `neovim` | Modal text editor for the terminal |
+| `obsidian` | Markdown knowledge base and note taking |
+| `onlyoffice` | Office suite with strong docx compatibility |
+| `pdfcraft` | Read, organize and secure PDF files |
+| `photocraft` | Image editor with layers and curves |
+| `prismlauncher` | Minecraft launcher with modpack support |
+| `qbittorrent` | BitTorrent client with a web interface |
+| `rpi-imager` | Write OS images to SD cards |
+| `shotcut` | Video editor with wide format support |
+| `soundcraft` | Audio recording, editing and mixing |
+| `spotify` | Music streaming client |
+| `steam` | Game store and launcher |
+| `telegram` | Cloud messenger with desktop client |
+| `thunderbird` | Mozilla mail and calendar client |
+| `ungoogled-chromium` | Chromium without Google integration |
+| `vectorcraft` | Vector illustration and design |
+| `vesktop` | Discord client with Vencord plugins |
+| `vinegarhq` | Run Roblox Studio on Linux |
+| `vscode` | Code editor with debugging and Git built in |
+| `vscodium` | VS Code without the telemetry |
+| `winboat` | Run Windows apps on Linux |
+| `wordcraft` | Word processing and documents |
+| `zed` | Fast collaborative code editor |
+| `zen-browser` | Firefox-based browser with a focus on calm browsing |
+
+Run `glp info <app>` for the version, size and checksum of any of them.
 
 ## What it is not
 
-- **Not a sandbox.** Extracted AppImages run with your user's full privileges.
-  If you need isolation, use Flatpak or `bwrap` yourself.
-- **Not a store.** `glp` ships no binaries; the catalog only carries metadata
-  and the download happens from the upstream vendor.
-- **Not a distro.** It integrates into `~/.local` and leaves your system
-  package database alone (except for the packages you explicitly approve).
+**Not a sandbox.** An extracted app runs with your user's permissions, so treat
+it like anything else you downloaded. If you want isolation, use Flatpak or
+`bwrap` yourself.
+
+**Not a store.** The catalog holds metadata, not files. Downloads come from
+upstream, which also means a vendor moving a release breaks the entry until the
+catalog is updated.
+
+**Not a distro.** Everything lands under `~/.local` and your system package
+database is left alone, except for the packages you approve.
+
+## Where it runs
+
+glp itself is one static binary for `linux/amd64` and `linux/arm64`, so it starts
+on any modern Linux. The package-manager integration, used by `glp doctor` and by
+apps with system dependencies, covers four families:
+
+- **Debian/Ubuntu** (apt): Ubuntu, Debian, Linux Mint, Pop!_OS, elementary OS, Zorin OS, Kali, Raspberry Pi OS, KDE neon
+- **Fedora/RHEL** (dnf): Fedora, RHEL, CentOS Stream, Rocky Linux, AlmaLinux, Oracle Linux, Amazon Linux
+- **openSUSE** (zypper): openSUSE Leap, openSUSE Tumbleweed, SLES
+- **Arch** (pacman): Arch, Manjaro, EndeavourOS, CachyOS, Garuda
+
+On another distribution glp installs apps that need no system packages, but it
+cannot map missing libraries to a package. The current catalog is x86_64 only, so
+an arm64 build of glp runs but has nothing to install yet.
 
 ## Install
 
@@ -49,20 +147,19 @@ until you remove the app or run `glp clean`.
 $ curl -fsSL https://raw.githubusercontent.com/pxradiso/glp/main/install.sh | sh
 ```
 
-The script detects `linux/amd64` or `linux/arm64`, verifies the release
-manifest's ed25519 signature with the key compiled into the source, checks the
-binary's SHA-256, and installs to `~/.local/bin/glp`. It never needs root. Set
-`PREFIX=/usr/local` if you want another prefix.
+The script works out whether you are on `linux/amd64` or `linux/arm64`, checks
+the release manifest's ed25519 signature with the key embedded in it, verifies
+the binary's SHA-256, and puts it in `~/.local/bin`. No root needed. Set
+`PREFIX=/usr/local` for a system-wide copy, which will ask for root.
 
-From a checkout, the same script builds and installs the source you are looking
-at:
+From a checkout, the same script builds what you are looking at:
 
 ```console
 $ ./install.sh              # build this checkout
 $ ./install.sh --release    # install the latest signed release instead
 ```
 
-Source builds need Go 1.27+. The result is a single static binary.
+Source builds need Go 1.27 or newer. The result is one static binary.
 
 ## Commands
 
@@ -75,8 +172,15 @@ Source builds need Go 1.27+. The result is a single static binary.
 | `glp upgrade [app]` | upgrade one app or everything |
 | `glp remove <app>` | delete binaries, menu entry, icon, files |
 | `glp doctor [app]` | find missing libraries and install them |
-| `glp update [--check]` | check for a new glp release and install it |
+| `glp update [--check]` | check glp and installed apps for updates |
 | `glp index refresh` | re-fetch and re-verify the catalog |
+| `glp index show` | print the source and cache paths |
+| `glp index set <url>` | switch to another catalog source |
+| `glp version` | print the version |
+
+A few short aliases exist because typing is not free: `glp s` for search,
+`glp i` or `glp add` for install, `glp ls`, `glp rm` or `glp uninstall`,
+`glp up` for upgrade, `glp fix` for doctor.
 
 Names are forgiving. An exact name always wins and never prompts. Otherwise a
 unique near miss asks first, and several near misses become a numbered list:
@@ -86,9 +190,10 @@ $ glp install win
 did you mean winboat? [Y/n]
 
 $ glp install vscod
+
 2 apps match "vscod":
-  1) vscode
-  2) vscodium
+  1) vscode               Code editor with debugging and Git…
+  2) vscodium             VS Code without the telemetry
 pick one [1-2, enter to cancel]:
 ```
 
@@ -99,20 +204,22 @@ guess.
 
 Environment:
 
-- `GLP_INDEX_URL` — catalog location. Supports `https://`, `file://` and plain paths.
-- `GLP_TRUST_KEY` — override the embedded public key (development only).
-- `GLP_YES=1` — skip the install confirmation (unattended installs).
-- `GLP_YES_ROOT=1` — **separately** approve root package installs, needed when
-  `GLP_YES=1` runs unattended.
-- `GLP_UPDATE_URL` — release manifest location (defaults to this project's releases).
-- `GLP_YES_UPDATE=1` — skip the update prompt, never the catalog prompt.
-- `GLP_NO_UPDATE_CHECK=1` — never check for a new release automatically.
-- `GLP_PLAIN=1` — no colour, no animation (also automatic when stderr is not a tty).
+- `GLP_INDEX_URL` for the catalog location. `https://`, `file://` and plain paths all work.
+- `GLP_TRUST_KEY` to override the embedded public key (development only).
+- `GLP_YES=1` skips the install confirmation.
+- `GLP_YES_ROOT=1` approves root package installs separately, which is what an
+  unattended `GLP_YES=1` run needs before it will touch `sudo`.
+- `GLP_UPDATE_URL` for the release manifest, if you host your own.
+- `GLP_YES_UPDATE=1` skips the update prompt, never the catalog prompt.
+- `GLP_NO_UPDATE_CHECK=1` turns off the automatic daily check.
+- `GLP_PLAIN=1` disables colour and animation, which also happens by itself
+  when stderr is not a terminal.
+- `NO_COLOR=1` does the same for scripts that already use that convention.
 
 ## Apps that only ship source code
 
-A few vendors publish nothing but a source tarball. Those entries carry a
-`build` block instead of a ready binary, like Vinegar:
+Some vendors publish nothing but a source tarball. Those entries carry a `build`
+block instead of a ready binary, like Vinegar:
 
 ```json
 "format": "tar.xz",
@@ -120,9 +227,10 @@ A few vendors publish nothing but a source tarball. Those entries carry a
 "build": { "commands": [["make", "install", "PREFIX=/usr", "DESTDIR={dest}"]] }
 ```
 
-`glp` verifies the tarball, asks before installing the build packages as root,
-then runs each step as an argv slice, never through a shell. `{src}`, `{dest}`
-and `{final}` are substituted; `{final}` is where the build will live after the
+glp verifies the tarball, names the build packages in the prompt, installs them
+with the same root approval, then runs each step as an argv slice, never through
+a shell. `{src}`, `{dest}` and
+`{final}` are substituted; `{final}` is where the build will live after the
 atomic rename. All of it comes from the signed catalog, so a build step cannot
 appear without a new catalog signature.
 
@@ -132,25 +240,27 @@ in `~/.local/bin`, a menu entry. Vinegar compiles to about 30 MB instead of the
 
 ## When an app installs but does not start
 
-Almost always it is one missing system library. `glp` checks the launcher with
-`ldd`, ignores anything the AppImage already bundles, and maps the rest to the
-package that provides it:
+Almost always it is one missing system library. glp runs `ldd` on the launcher,
+ignores anything the AppImage already bundles, and asks the package manager which
+package provides the rest:
 
 ```console
 $ glp doctor discord
+
 discord 1.0.167
-  missing libraries (1):
+  missing (1):
     libXss.so.1
 
-packages for discord (Fedora/RHEL (dnf)):
+discord needs (root, fedora):
   sudo dnf install -y libXScrnSaver
-Install them? [y/N]
+Install them? [Y/n]
 ```
 
-This also runs automatically at the end of an install, and re-checks afterwards.
-Mapping is done by the local package manager (`dnf provides`, `apt-file`,
-`pacman -F`, `zypper search --provides`), so no table of library names is baked
-into the binary.
+After an install the same check runs automatically, and re-checks afterwards. The mapping is
+done by your package manager (`dnf provides`, `apt-file`, `pacman -F`,
+`zypper search --provides`), so there is no table of library names baked into the
+binary. On Arch the first lookup usually needs `sudo pacman -Fy` once, to have a
+file database to search.
 
 ## System packages the app needs
 
@@ -167,8 +277,8 @@ Install? [Y/n]
   installing vlc (root)
 ```
 
-If root is not approved the app is still installed, and glp prints the command
-it would have run instead of asking a second time:
+If root is not approved the app is still installed, and glp prints the command it
+would have run instead of asking a second time:
 
 ```console
 vlc still missing (root not approved)
@@ -177,28 +287,28 @@ vlc still missing (root not approved)
 
 ## Security model
 
-The catalog is the trust root, so it is treated as hostile input:
+The catalog is the trust root, so glp treats it as hostile input:
 
-- The catalog is signed with **ed25519**; the public key is compiled into the
-  binary. Signature verification happens on every load, including cached copies.
-  An unsigned or tampered catalog is refused before anything is downloaded.
+- The catalog is signed with **ed25519** and the public key is compiled into the
+  binary. The signature is checked on every load, including cached copies, and an
+  unsigned or tampered catalog is refused before anything is downloaded.
 - Every download is pinned by **SHA-256** in the signed catalog and verified
   after download. A mismatched file is deleted, never executed. For an itch.io
   entry the link is resolved at install time, but the bytes are still pinned.
 - Package names are validated against `^[A-Za-z0-9][A-Za-z0-9+._-]*$` and passed
-  to the package manager **via `execve`, never through a shell**. A catalog can
-  therefore name packages, but cannot smuggle commands.
+  to the package manager through `execve`, never a shell. A catalog can name
+  packages, but it cannot smuggle commands.
 - Root actions only happen after a yes from you. The install confirmation names
-  the packages it will install, so that one yes covers them; `GLP_YES` alone
-  does not, and automating `glp install` never implies automating `sudo`.
+  the packages it will install, so that one yes covers them. `GLP_YES` alone does
+  not, and automating `glp install` never implies automating `sudo`.
 
-What this does *not* protect you from: a compromised signing key, or an upstream
-vendor replacing a release file at a URL you already trust (SHA-256 pins the file,
-not the vendor's intent). Keep the private key offline.
+What this does not protect you from: a stolen signing key, or a vendor replacing a
+release file at a URL you already trust. SHA-256 pins the file, not the vendor's
+intent. Keep the private key offline.
 
 ## Catalog format
 
-One JSON document, plus a detached signature (`index.json.sig`, base64):
+One JSON document plus a detached signature (`index.json.sig`, base64):
 
 ```json
 {
@@ -207,35 +317,35 @@ One JSON document, plus a detached signature (`index.json.sig`, base64):
   "apps": [
     {
       "name": "discord",
-      "version": "0.0.84",
-      "summary": "Chat for communities",
+      "version": "1.0.167",
+      "summary": "Voice, video and text chat for communities",
       "homepage": "https://discord.com",
       "license": "proprietary",
       "archs": ["x86_64"],
-      "url": "https://upstream.example/Discord.AppImage",
+      "url": "https://stable.dl2.discordapp.net/apps/linux/1.0.167/discord-1.0.167.tar.gz",
       "sha256": "…64 hex chars…",
-      "size": 98765432,
+      "size": 2395987,
       "format": "tar.gz",
-      "bins": ["usr/bin/discord"],
+      "bins": ["discord"],
       "desktop": { "name": "Discord", "icon": "discord", "categories": ["Network"] },
-      "deps": { "debian": ["libasound2t64"], "fedora": ["alsa-lib"] }
+      "deps": {}
     }
   ]
 }
 ```
 
 `format` is `appimage` when omitted. Tarballs (`tar.gz`, `tar.xz`, `tar.bz2`,
-`tar.zst`) are supported too, because some vendors only ship those — Discord
-publishes nothing else. A single wrapping directory is flattened automatically,
-and `tar.gz` is unpacked in-process with a path-traversal guard.
+`tar.zst`) are supported too, because some vendors ship nothing else, Discord
+among them. A single wrapping directory is flattened automatically, and `tar.gz`
+is unpacked in-process with a path-traversal guard.
 
 Zip archives are supported for vendors that wrap an AppDir or a single AppImage,
-and `.deb` for vendors that only publish a Debian package, like Spotify. A deb
-is just an `ar` container around `data.tar.*`.
+and `.deb` for vendors that only publish a Debian package, like Spotify. A deb is
+just an `ar` container around `data.tar.*`.
 
 Some games only ship through itch.io, and the download link itch hands out is
-signed and expires after about a minute. Those entries name the game page and
-the upload id instead of a URL:
+signed and expires after about a minute. Those entries name the game page and the
+upload id instead of a URL:
 
 ```json
 "format": "zip",
@@ -243,8 +353,8 @@ the upload id instead of a URL:
 ```
 
 glp replays the same free download flow a browser does, then verifies the bytes
-against the pinned SHA-256 like any other entry. The link is dynamic, the
-content is not: a different file is still refused.
+against the pinned SHA-256 like any other entry. The link is dynamic, the content
+is not: a different file is still refused.
 
 `icon` points at art inside the archive, for builds that ship a logo but no
 desktop file to name it. Games keep their sprites in a sheet, so `crop` cuts one
@@ -257,12 +367,12 @@ frame, as `[x, y, width, height]`:
 `workdir: true` starts the program from its own directory. Game engines such as
 Lime look for the native library in the current directory, not next to the
 binary, so the menu entry gets a `Path=` line and the terminal launcher a one
-line `cd`. Without it the game starts from the menu and fails from a shell, or
+line `cd`. Without it a game can start from the menu and fail from a shell, or
 the other way around.
 
 `bins` are paths relative to the AppDir root; a bare name is also accepted and
 looked up under `usr/bin`. `deps` is keyed by distro family (`debian`, `fedora`,
-`suse`, `arch`) and is usually empty — a well-built AppImage needs nothing.
+`suse`, `arch`) and is usually empty, since a well-built AppImage needs nothing.
 
 ## Adding an app does not need a new release
 
@@ -272,15 +382,15 @@ The catalog lives outside the binary. `glp search`, `info`, `install` and
 command and nothing in the installed program changes. If the source is
 unreachable, the last signed copy in the cache is used.
 
-`glp` never swaps its own binary without an explicit yes, and installed apps
-never update on their own. Only the catalog refreshes automatically.
+glp never swaps its own binary without an explicit yes, and installed apps never
+update on their own. Only the catalog refreshes by itself.
 
 ## Updating glp
 
-The binary is a static, CGO-free Go program, so one `linux/amd64` build runs on
-every distribution where the kernel and CPU are new enough, regardless of glibc,
-musl or the package manager. There is nothing distro-specific to update, and no
-platform without a matching asset is ever offered an update.
+The binary is static, CGO-free Go, so one `linux/amd64` build runs on every
+distribution where the kernel and CPU are new enough, whatever the libc or the
+package manager. There is nothing distro-specific to update, and a platform
+without a matching asset is never offered one.
 
 `glp update` fetches `update.json` from the releases page, verifies its ed25519
 signature with the same key that signs the catalog, and compares versions:
@@ -295,14 +405,14 @@ glp updated to 0.2.0
 
 The new binary's SHA-256 is pinned in the signed manifest, checked after
 download, and only then renamed over the running executable. The old inode stays
-alive until the process exits, so the update is safe while `glp` is running. If
-`glp` lives in a directory you cannot write to, the update fails and names that
-path instead of trying to escalate.
+alive until the process exits, so updating while glp runs is safe. If glp lives
+in a directory you cannot write to, the update fails and names that path instead
+of trying to escalate.
 
-If nothing is published at the update URL, which is normal for a build made
-from source, `glp update` says so and exits clean instead of reporting a 404.
-A source that cannot be reached at all gets one short line, with no host or
-status code to read:
+If nothing is published at the update URL, which is normal for a build made from
+source, glp says so and exits clean instead of reporting a 404. A source that
+cannot be reached at all gets one short line, with no host or status code to
+read:
 
 ```console
 $ glp update
@@ -312,10 +422,28 @@ $ glp update
 glp: update servers are not responding
 ```
 
-`glp update --check` reports the same information and stops without asking.
-Daily, on an interactive terminal only, the first `glp` command of the day asks
-once. Declining or being offline costs nothing and is not retried until the next
-day. `GLP_NO_UPDATE_CHECK=1` disables the automatic check entirely.
+The same command refreshes the catalog and lists the installed apps whose catalog
+entry moved ahead, which is what `glp upgrade` would install:
+
+```console
+$ glp update
+2 apps can be updated:
+  APP                    INSTALLED    AVAILABLE         SIZE
+  discord                0.0.84       0.0.90         98.1 MiB
+  vscode                 1.95.0       1.96.0        124.8 MiB
+
+  run: glp upgrade
+
+glp 0.1.0 is up to date
+```
+
+`glp update` never installs an app by itself; `glp upgrade` does that, keeping its
+per-app confirmation. `glp update --check` reports glp and app updates and stops
+without asking anything.
+
+Daily, on an interactive terminal only, the first glp command of the day asks
+once about a new release. Declining or being offline costs nothing and is not
+retried until the next day. `GLP_NO_UPDATE_CHECK=1` disables that check entirely.
 
 The manifest is small and separate from the binaries:
 
@@ -334,9 +462,9 @@ The manifest is small and separate from the binaries:
 }
 ```
 
-Assets are keyed by `GOOS/GOARCH`. An entry that is missing for the current
-platform means no update is offered, which is how unsupported systems are
-handled without a special case in the code.
+Assets are keyed by `GOOS/GOARCH`. A missing entry for the current platform means
+no update is offered, which handles unsupported systems without a special case in
+the code.
 
 ### Making a release
 
@@ -344,10 +472,10 @@ handled without a special case in the code.
 $ VERSION=0.2.0 ./scripts/release.sh
 ```
 
-This builds `linux/amd64` and `linux/arm64`, writes `dist/update.json` with the
-URL and checksum of each, and signs it. Upload the two binaries, `update.json`
-and `update.json.sig` to the `v0.2.0` GitHub release; the default
-`releases/latest/download/update.json` URL then serves the new version.
+This builds `linux/amd64` and `linux/arm64`, writes `dist/update.json` with the URL
+and checksum of each, and signs it. Upload the two binaries, `update.json` and
+`update.json.sig` to the `v0.2.0` GitHub release, and the default
+`releases/latest/download/update.json` URL serves the new version.
 
 ## Signing
 
@@ -363,27 +491,28 @@ $ go run ./tools/sign sign ~/.config/glp/dev.key catalog/index.json
 $ go run ./tools/sign sign ~/.config/glp/dev.key dist/update.json
 ```
 
-Never commit the private key. Rotating it requires shipping a new `glp`.
+Never commit the private key. Rotating it means shipping a new glp.
 
 ## Limitations worth knowing
 
-- **glibc.** A binary built on a recent distro will not run on an older one.
-  Build AppImages inside an old container (Debian oldstable) — that is the whole
-  trick behind "runs anywhere".
-- **Dead links.** Because binaries come from upstream, a moved release breaks the
-  entry until the catalog is refreshed. `glp` fails loudly rather than silently.
+- **glibc.** A binary built on a recent distro will not run on an older one. Build
+  AppImages inside an old container (Debian oldstable). That is the whole trick
+  behind "runs anywhere".
+- **Dead links.** Binaries come from upstream, so a moved release breaks the entry
+  until the catalog is refreshed. glp fails loudly rather than silently.
 - **itch.io entries.** The link itch hands out expires in about a minute, so glp
   replays the page flow at install time. If itch changes that flow the install
   stops with an error; the pinned SHA-256 still guarantees the bytes.
 - **Debian needs `apt-file`** for `glp doctor` to map a soname to a package.
-  Without it the missing libraries are still listed, just not auto-installed.
-- **No portals.** File choosers and notifications come from the host desktop.
-  That is fine for normal apps and is exactly the complexity `glp` avoids.
+  Without it the missing libraries are still listed, just not installed.
+- **No portals.** File choosers and notifications come from the host desktop. That
+  is fine for normal apps and is exactly the complexity glp avoids.
 - **Bootstrapper apps.** Discord's official tarball is a ~2 MB launcher that
   downloads the real application (hundreds of MB) into `~/.config/discord` on
-  first start. `glp remove` cleans up what `glp` installed, not that payload.
+  first start. `glp remove` cleans up what glp installed, not that payload.
 - **Download cache.** `~/.cache/glp/downloads` keeps the archive of an installed
-  app, so a repair does not download it again. `glp index refresh` clears
-  anything that no longer belongs to an installed app.
-- **Desktop cache.** If a menu entry does not appear immediately, run
+  app so a repair does not download it again. `glp index refresh` clears archives
+  that do not match an installed version, including old versions after an
+  upgrade.
+- **Desktop cache.** If a menu entry does not show up, run
   `update-desktop-database ~/.local/share/applications`.
