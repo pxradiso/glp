@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updated": "2026-10-30T12:30:00Z",
+  "updated": "2026-11-03T11:38:13Z",
   "apps": [
     {
       "name": "anki",
@@ -30,15 +30,15 @@
     },
     {
       "name": "appimagetool",
-      "version": "continuous",
+      "version": "1.9.1",
       "summary": "Build an AppImage from an AppDir",
       "homepage": "https://github.com/AppImage/appimagetool",
       "license": "MIT",
       "archs": [
         "x86_64"
       ],
-      "url": "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage",
-      "sha256": "95cbe7cce9717fce90c484e34052ee7c7f1d7635b33c12525b4776826a7d29b6",
+      "url": "https://github.com/AppImage/appimagetool/releases/download/1.9.1/appimagetool-x86_64.AppImage",
+      "sha256": "ed4ce84f0d9caff66f50bcca6ff6f35aae54ce8135408b3fa33abfc3cb384eb0",
       "size": 15092216,
       "bins": [
         "usr/bin/appimagetool"
@@ -56,16 +56,16 @@
     },
     {
       "name": "appimageupdate",
-      "version": "continuous",
+      "version": "2.0.0-alpha-1-20251018",
       "summary": "Update AppImages in place using zsync deltas",
-      "homepage": "https://github.com/AppImage/AppImageUpdate",
+      "homepage": "https://github.com/AppImageCommunity/AppImageUpdate",
       "license": "MIT",
       "archs": [
         "x86_64"
       ],
-      "url": "https://github.com/AppImage/AppImageUpdate/releases/download/continuous/AppImageUpdate-x86_64.AppImage",
-      "sha256": "963daa01c76efc71a3c55979f2c8d68222b7acc965e3bcc0f2d1bbfa601c3de0",
-      "size": 48634360,
+      "url": "https://github.com/AppImageCommunity/AppImageUpdate/releases/download/2.0.0-alpha-1-20251018/AppImageUpdate-x86_64.AppImage",
+      "sha256": "52a58d7edf49eecf62b9d04e574406509cf58f204f0616b72724df03b1f3d37e",
+      "size": 48638456,
       "bins": [
         "usr/bin/AppImageUpdate"
       ],
