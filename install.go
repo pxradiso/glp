@@ -110,7 +110,7 @@ func cmdInstall(args []string) error {
 	if app.Build != nil {
 		what = "building"
 	}
-	s2 := startStep(2, steps, what, false)
+	s2 := startStep(2, steps, what)
 	versionDir, err := extractApp(app, blob)
 	if err != nil {
 		s2.Fail(err.Error())
@@ -118,14 +118,14 @@ func cmdInstall(args []string) error {
 	}
 	s2.Done()
 
-	s3 := startStep(3, steps, "linking "+primaryBin(app), false)
+	s3 := startStep(3, steps, "linking "+primaryBin(app))
 	if err := linkBins(app, versionDir); err != nil {
 		s3.Fail(err.Error())
 		return err
 	}
 	s3.Done()
 
-	s4 := startStep(4, steps, "desktop entry and icon", false)
+	s4 := startStep(4, steps, "menu entry and icon")
 	desktopFile, iconFile, err := writeDesktop(app, versionDir)
 	if err != nil {
 		s4.Fail(err.Error())

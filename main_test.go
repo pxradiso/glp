@@ -7,6 +7,7 @@ import (
 	"compress/gzip"
 	"crypto/ed25519"
 	"crypto/rand"
+	"crypto/sha256"
 	"encoding/base64"
 	"encoding/hex"
 	"errors"
@@ -18,8 +19,11 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
+	"sync/atomic"
 	"testing"
+	"time"
 )
 
 func TestCompareVersions(t *testing.T) {
@@ -145,16 +149,59 @@ func TestSignatureWrongKey(t *testing.T) {
 	}
 }
 
-func TestCopyVerifiedRejectsBadChecksum(t *testing.T) {
+func shaHex(s string) string {
+	sum := sha256.Sum256([]byte(s))
+	return hex.EncodeToString(sum[:])
+}
+
+func TestSavePartWritesAndRejects(t *testing.T) {
 	dir := t.TempDir()
 	dest := filepath.Join(dir, "out.AppImage")
-	err := copyVerified(strings.NewReader("malicious payload"), dest, 17,
+	body := "verified payload"
+
+	if err := savePart(strings.NewReader(body), dest, 0, int64(len(body)), shaHex(body)); err != nil {
+		t.Fatalf("savePart = %v", err)
+	}
+	b, err := os.ReadFile(dest)
+	if err != nil || string(b) != body {
+		t.Fatalf("dest = %q, %v", b, err)
+	}
+	if _, err := os.Stat(dest + ".part"); !os.IsNotExist(err) {
+		t.Fatal(".part was left behind after a good save")
+	}
+
+	// A checksum mismatch must not leave the file in the cache.
+	badDest := filepath.Join(dir, "bad.AppImage")
+	err = savePart(strings.NewReader("malicious payload"), badDest, 0, 17,
 		"0000000000000000000000000000000000000000000000000000000000000000")
 	if err == nil {
 		t.Fatal("bad checksum accepted")
 	}
-	if _, statErr := os.Stat(dest); !os.IsNotExist(statErr) {
+	var ce *checksumError
+	if !errors.As(err, &ce) {
+		t.Fatalf("savePart error = %v, want checksumError", err)
+	}
+	if _, statErr := os.Stat(badDest); !os.IsNotExist(statErr) {
 		t.Fatal("file was left behind after a failed checksum")
+	}
+	if _, statErr := os.Stat(badDest + ".part"); !os.IsNotExist(statErr) {
+		t.Fatal("corrupt .part was left behind")
+	}
+}
+
+func TestSavePartResumesFromPartial(t *testing.T) {
+	dir := t.TempDir()
+	dest := filepath.Join(dir, "resume.AppImage")
+	body := "0123456789abcdef"
+	if err := os.WriteFile(dest+".part", []byte(body[:8]), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if err := savePart(strings.NewReader(body[8:]), dest, 8, int64(len(body)), shaHex(body)); err != nil {
+		t.Fatalf("savePart resume = %v", err)
+	}
+	b, err := os.ReadFile(dest)
+	if err != nil || string(b) != body {
+		t.Fatalf("resumed file = %q, %v", b, err)
 	}
 }
 
@@ -172,52 +219,158 @@ func TestIndexSearchRanking(t *testing.T) {
 	}
 }
 
-func TestChompCells(t *testing.T) {
-	s := chompCells(5, false)
-	if len(s) != barWidth {
-		t.Fatalf("bar width = %d, want %d", len(s), barWidth)
+func TestBarCells(t *testing.T) {
+	if got := barCells(0); strings.Count(got, "░") != barWidth || strings.Count(got, "█") != 0 {
+		t.Errorf("empty bar = %q", got)
 	}
-	if strings.Count(s, "C") != 1 {
-		t.Fatalf("expected exactly one pacman, got %q", s)
+	if got := barCells(barWidth); strings.Count(got, "█") != barWidth || strings.Count(got, "░") != 0 {
+		t.Errorf("full bar = %q", got)
 	}
-	for i, r := range s {
-		switch {
-		case i < 5:
-			if r != ' ' {
-				t.Errorf("cell %d should be eaten, got %q", i, r)
-			}
-		case i == 5:
-			if r != 'C' {
-				t.Errorf("cell %d should be pacman, got %q", i, r)
-			}
-		default:
-			if r != '-' {
-				t.Errorf("cell %d should be a pellet, got %q", i, r)
-			}
-		}
+	half := barCells(6)
+	if strings.Count(half, "█") != 6 {
+		t.Errorf("half bar = %q, want 6 filled cells", half)
 	}
-
-	// Removal runs backwards: pellets survive on the left of the head.
-	r := chompCells(5, true)
-	for i, c := range r {
-		switch {
-		case i < 5:
-			if c != '-' {
-				t.Errorf("reverse cell %d should be a pellet, got %q", i, c)
-			}
-		case i > 5:
-			if c != ' ' {
-				t.Errorf("reverse cell %d should be eaten, got %q", i, c)
-			}
-		}
+	if strings.Count(half, "█")+strings.Count(half, "░") != barWidth {
+		t.Errorf("bar width = %d, want %d", strings.Count(half, "█")+strings.Count(half, "░"), barWidth)
 	}
 
 	// Out-of-range heads clamp instead of panicking.
-	if !strings.HasSuffix(chompCells(999, false), "C") {
-		t.Error("head above width should clamp to the last cell")
+	if barCells(-3) != barCells(0) {
+		t.Error("negative head should clamp to the start")
 	}
-	if !strings.HasPrefix(chompCells(-3, false), "C") {
-		t.Error("negative head should clamp to the first cell")
+	if barCells(999) != barCells(barWidth) {
+		t.Error("head above width should clamp to full")
+	}
+}
+
+func TestParseContentRange(t *testing.T) {
+	cases := []struct {
+		in                string
+		start, end, total int64
+		ok                bool
+	}{
+		{"bytes 1024-2047/4096", 1024, 2047, 4096, true},
+		{"bytes 0-9/*", 0, 9, 0, true},
+		{"bytes 0-0/1", 0, 0, 1, true},
+		{"bytes 0-9/9", 0, 0, 0, false},
+		{"bytes 5-3/10", 0, 0, 0, false},
+		{"items 0-9/10", 0, 0, 0, false},
+		{"bytes 0-9", 0, 0, 0, false},
+		{"", 0, 0, 0, false},
+	}
+	for _, tc := range cases {
+		start, end, total, ok := parseContentRange(tc.in)
+		if ok != tc.ok || start != tc.start || end != tc.end || total != tc.total {
+			t.Errorf("parseContentRange(%q) = %d,%d,%d,%v, want %d,%d,%d,%v",
+				tc.in, start, end, total, ok, tc.start, tc.end, tc.total, tc.ok)
+		}
+	}
+}
+
+func TestHumanRateAndDuration(t *testing.T) {
+	if got := humanRate(512); got != "512 B/s" {
+		t.Errorf("humanRate(512) = %q", got)
+	}
+	if got := humanRate(1536); got != "1.5 KiB/s" {
+		t.Errorf("humanRate(1536) = %q", got)
+	}
+	cases := []struct {
+		d    time.Duration
+		want string
+	}{
+		{0, "0:00"},
+		{45 * time.Second, "0:45"},
+		{65 * time.Second, "1:05"},
+		{time.Hour, "1:00:00"},
+		{-time.Minute, "0:00"},
+	}
+	for _, tc := range cases {
+		if got := humanDuration(tc.d); got != tc.want {
+			t.Errorf("humanDuration(%v) = %q, want %q", tc.d, got, tc.want)
+		}
+	}
+}
+
+func TestDownloadResumesPart(t *testing.T) {
+	body := []byte(strings.Repeat("glp-resume-", 64))
+	sum := sha256.Sum256(body)
+	dest := filepath.Join(t.TempDir(), "app.bin")
+	if err := os.WriteFile(dest+".part", body[:100], 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	var sawRange string
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		sawRange = r.Header.Get("Range")
+		off := 0
+		if sawRange != "" {
+			if _, err := fmt.Sscanf(sawRange, "bytes=%d-", &off); err != nil {
+				t.Errorf("unexpected Range header %q", sawRange)
+			}
+		}
+		w.Header().Set("Content-Length", strconv.Itoa(len(body)-off))
+		if off > 0 {
+			w.Header().Set("Content-Range", fmt.Sprintf("bytes %d-%d/%d", off, len(body)-1, len(body)))
+			w.WriteHeader(http.StatusPartialContent)
+		}
+		w.Write(body[off:])
+	}))
+	defer srv.Close()
+
+	if err := downloadTo(srv.URL, dest, int64(len(body)), hex.EncodeToString(sum[:])); err != nil {
+		t.Fatalf("downloadTo = %v", err)
+	}
+	if !strings.HasPrefix(sawRange, "bytes=100-") {
+		t.Errorf("Range = %q, want a resume from 100", sawRange)
+	}
+	got, err := os.ReadFile(dest)
+	if err != nil || !bytes.Equal(got, body) {
+		t.Fatalf("resumed file does not match the source (%v)", err)
+	}
+}
+
+func TestDownloadRetriesTransient(t *testing.T) {
+	body := []byte("retry me")
+	sum := sha256.Sum256(body)
+	dest := filepath.Join(t.TempDir(), "retry.bin")
+
+	var calls int32
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if atomic.AddInt32(&calls, 1) == 1 {
+			http.Error(w, "try again", http.StatusServiceUnavailable)
+			return
+		}
+		w.Header().Set("Content-Length", strconv.Itoa(len(body)))
+		w.Write(body)
+	}))
+	defer srv.Close()
+
+	if err := downloadTo(srv.URL, dest, int64(len(body)), hex.EncodeToString(sum[:])); err != nil {
+		t.Fatalf("downloadTo = %v", err)
+	}
+	if got := atomic.LoadInt32(&calls); got != 2 {
+		t.Errorf("requests = %d, want 2", got)
+	}
+	got, err := os.ReadFile(dest)
+	if err != nil || !bytes.Equal(got, body) {
+		t.Fatalf("downloaded file = %q, %v", got, err)
+	}
+}
+
+func TestDownloadDoesNotRetryNotFound(t *testing.T) {
+	dest := filepath.Join(t.TempDir(), "missing.bin")
+	var calls int32
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		atomic.AddInt32(&calls, 1)
+		http.NotFound(w, r)
+	}))
+	defer srv.Close()
+
+	if err := downloadTo(srv.URL, dest, 10, strings.Repeat("0", 64)); err == nil {
+		t.Fatal("404 should fail")
+	}
+	if got := atomic.LoadInt32(&calls); got != 1 {
+		t.Errorf("requests = %d, want 1", got)
 	}
 }
 

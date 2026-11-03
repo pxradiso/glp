@@ -119,11 +119,11 @@ func reportAppUpdates() bool {
 	} else {
 		fmt.Printf("%d apps can be updated:\n", len(ups))
 	}
-	fmt.Printf("  %-22s %-12s %-12s %9s\n", "APP", "INSTALLED", "AVAILABLE", "SIZE")
+	rows := make([][]string, 0, len(ups))
 	for _, u := range ups {
-		fmt.Printf("  %-22s %-12s %-12s %9s\n",
-			u.Name, u.Installed, u.Available, humanBytes(u.Size))
+		rows = append(rows, []string{u.Name, u.Installed, u.Available, humanBytes(u.Size)})
 	}
+	writeTable(os.Stdout, "  ", []string{"APP", "INSTALLED", "AVAILABLE", "SIZE"}, rows, 3)
 	fmt.Println("\n  run: glp upgrade")
 	return true
 }

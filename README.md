@@ -7,16 +7,17 @@ No daemon, no FUSE, no root by default, no runtime to install.
 
 ```console
 $ glp install appimagetool
-appimagetool continuous
+appimagetool 1.9.1
   Build an AppImage from an AppDir
   size    14.4 MiB
-  sha256  95cbe7cc…
+  sha256  ed4ce84f…
 
 Install? [Y/n]
-(1/4) downloading appimagetool-x86_64.AppImage
-  ✔ (2/4) extracting
-  ✔ (3/4) linking appimagetool
-  ✔ (4/4) desktop entry and icon
+  [1/4]  downloading appimagetool-x86_64.AppImage
+  [████████████████████████] 100%  14.4 MiB / 14.4 MiB  5.6 MiB/s
+  ✓ [2/4] extracting
+  ✓ [3/4] linking appimagetool
+  ✓ [4/4] menu entry and icon
 
 run: appimagetool
 ```
@@ -522,6 +523,8 @@ Never commit the private key. Rotating it means shipping a new glp.
 - **Download cache.** `~/.cache/glp/downloads` keeps the archive of an installed
   app so a repair does not download it again. `glp index refresh` clears archives
   that do not match an installed version, including old versions after an
-  upgrade.
+  upgrade. An interrupted transfer keeps a `.part` file and resumes from there
+  with an HTTP range request; a file that fails its checksum is deleted instead
+  of being resumed.
 - **Desktop cache.** If a menu entry does not show up, run
   `update-desktop-database ~/.local/share/applications`.

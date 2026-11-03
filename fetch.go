@@ -4,12 +4,15 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -87,10 +90,7 @@ func fetchBytesClient(client *http.Client, url string) ([]byte, error) {
 	if resp.StatusCode != http.StatusOK {
 		return nil, &statusError{URL: url, Code: resp.StatusCode}
 	}
-	pr := newProgress(resp.Body, resp.ContentLength)
-	b, err := io.ReadAll(pr)
-	pr.Done()
-	return b, err
+	return io.ReadAll(resp.Body)
 }
 
 func indexURLCache() string { return filepath.Join(cacheDir(), "index.url") }
@@ -327,46 +327,189 @@ func pruneDownloads(idx *Index) {
 	}
 }
 
-func downloadTo(url, dest string, size int64, wantSHA string) error {
-	if path, ok := localPath(url); ok {
+const downloadAttempts = 3
+
+// retryError marks a failed attempt that is worth repeating from the current
+// .part file, for example a server that answered a range request strangely.
+type retryError struct{ err error }
+
+func (e *retryError) Error() string { return e.err.Error() }
+func (e *retryError) Unwrap() error { return e.err }
+
+// checksumError is a finished transfer whose bytes do not match the catalog.
+// resumed means the bad data may have come from an old partial file, so one
+// clean retry from zero is allowed.
+type checksumError struct {
+	want, got string
+	resumed   bool
+}
+
+func (e *checksumError) Error() string {
+	return fmt.Sprintf("checksum mismatch, not installing\n  expected %s\n  got      %s", e.want, e.got)
+}
+
+func downloadTo(rawURL, dest string, size int64, wantSHA string) error {
+	if path, ok := localPath(rawURL); ok {
 		src, err := os.Open(path)
 		if err != nil {
 			return err
 		}
 		defer src.Close()
-		return copyVerified(src, dest, size, wantSHA)
+		return savePart(src, dest, 0, size, wantSHA)
 	}
 
-	req, err := http.NewRequest(http.MethodGet, url, nil)
+	var last error
+	for attempt := 1; attempt <= downloadAttempts; attempt++ {
+		err := fetchToPart(rawURL, dest, size, wantSHA)
+		if err == nil {
+			return nil
+		}
+		last = err
+		if !retryableDownload(err) {
+			return err
+		}
+		if attempt < downloadAttempts {
+			time.Sleep(time.Duration(attempt) * 400 * time.Millisecond)
+		}
+	}
+	return last
+}
+
+// fetchToPart downloads one attempt, resuming from .part when the server
+// supports ranges. A 200 answer means the server ignored the range and the
+// partial file is restarted from zero.
+func fetchToPart(rawURL, dest string, size int64, wantSHA string) error {
+	part := dest + ".part"
+	off := partSize(part)
+	if size > 0 && off > size {
+		os.Remove(part)
+		off = 0
+	}
+	if size > 0 && off == size {
+		if ok, _ := hashMatches(part, wantSHA); ok {
+			return os.Rename(part, dest)
+		}
+		os.Remove(part)
+		off = 0
+	}
+
+	req, err := http.NewRequest(http.MethodGet, rawURL, nil)
 	if err != nil {
 		return err
 	}
 	req.Header.Set("User-Agent", "glp/"+version)
+	if off > 0 {
+		req.Header.Set("Range", fmt.Sprintf("bytes=%d-", off))
+	}
 	resp, err := httpClient.Do(req)
 	if err != nil {
 		return err
 	}
 	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("%s: HTTP %s", url, resp.Status)
+
+	start := off
+	total := size
+	switch resp.StatusCode {
+	case http.StatusPartialContent:
+		rstart, _, rtotal, ok := parseContentRange(resp.Header.Get("Content-Range"))
+		if !ok || rstart != off {
+			os.Remove(part)
+			return &retryError{errors.New("server returned an unexpected range")}
+		}
+		if rtotal > 0 {
+			total = rtotal
+		}
+	case http.StatusOK:
+		start = 0
+	case http.StatusRequestedRangeNotSatisfiable:
+		os.Remove(part)
+		return &retryError{errors.New("server rejected the resume range")}
+	default:
+		return &statusError{URL: rawURL, Code: resp.StatusCode}
 	}
-	total := resp.ContentLength
-	if total <= 0 {
-		total = size
+	if resp.ContentLength >= 0 {
+		if t := resp.ContentLength + start; t > 0 {
+			total = t
+		}
 	}
-	return copyVerified(resp.Body, dest, total, wantSHA)
+	return savePart(resp.Body, dest, start, total, wantSHA)
 }
 
-func copyVerified(src io.Reader, dest string, total int64, wantSHA string) error {
-	tmp := dest + ".part"
-	f, err := os.Create(tmp)
+func partSize(path string) int64 {
+	fi, err := os.Stat(path)
+	if err != nil || fi.IsDir() {
+		return 0
+	}
+	return fi.Size()
+}
+
+// parseContentRange reads "bytes 1024-2047/4096". A "*" total leaves total at
+// zero, which the progress bar treats as unknown.
+func parseContentRange(v string) (start, end, total int64, ok bool) {
+	v = strings.TrimSpace(v)
+	if !strings.HasPrefix(v, "bytes ") {
+		return 0, 0, 0, false
+	}
+	rng, tot, found := strings.Cut(strings.TrimSpace(strings.TrimPrefix(v, "bytes ")), "/")
+	if !found {
+		return 0, 0, 0, false
+	}
+	s, e, found := strings.Cut(rng, "-")
+	if !found {
+		return 0, 0, 0, false
+	}
+	start, err := strconv.ParseInt(s, 10, 64)
+	if err != nil {
+		return 0, 0, 0, false
+	}
+	end, err = strconv.ParseInt(e, 10, 64)
+	if err != nil || end < start {
+		return 0, 0, 0, false
+	}
+	if tot != "*" {
+		total, err = strconv.ParseInt(tot, 10, 64)
+		if err != nil || total <= end {
+			return 0, 0, 0, false
+		}
+	}
+	return start, end, total, true
+}
+
+// savePart writes the body to dest.part, hashing as it goes. On a network
+// failure the partial file stays, so the next attempt can resume; on a
+// checksum mismatch it is deleted because the bytes are not trustworthy.
+func savePart(src io.Reader, dest string, start, total int64, wantSHA string) error {
+	part := dest + ".part"
+	if err := mustMkdirAll(filepath.Dir(dest)); err != nil {
+		return err
+	}
+	flags := os.O_CREATE | os.O_WRONLY
+	if start > 0 {
+		flags |= os.O_APPEND
+	} else {
+		flags |= os.O_TRUNC
+	}
+	f, err := os.OpenFile(part, flags, 0o644)
 	if err != nil {
 		return err
 	}
-	defer os.Remove(tmp)
 
 	hasher := sha256.New()
-	pr := newProgress(src, total)
+	if start > 0 {
+		rf, err := os.Open(part)
+		if err != nil {
+			f.Close()
+			return err
+		}
+		_, err = io.Copy(hasher, rf)
+		rf.Close()
+		if err != nil {
+			f.Close()
+			return err
+		}
+	}
+
+	pr := newProgressAt(src, total, start)
 	_, copyErr := io.Copy(io.MultiWriter(f, hasher), pr)
 	pr.Done()
 	if copyErr != nil {
@@ -383,9 +526,36 @@ func copyVerified(src io.Reader, dest string, total int64, wantSHA string) error
 
 	got := hex.EncodeToString(hasher.Sum(nil))
 	if !strings.EqualFold(got, wantSHA) {
-		return fmt.Errorf("checksum mismatch, not installing\n  expected %s\n  got      %s", wantSHA, got)
+		os.Remove(part)
+		return &checksumError{want: wantSHA, got: got, resumed: start > 0}
 	}
-	return os.Rename(tmp, dest)
+	return os.Rename(part, dest)
+}
+
+func retryableDownload(err error) bool {
+	var ce *checksumError
+	if errors.As(err, &ce) {
+		return ce.resumed
+	}
+	var re *retryError
+	if errors.As(err, &re) {
+		return true
+	}
+	var se *statusError
+	if errors.As(err, &se) {
+		return se.Code == http.StatusRequestTimeout ||
+			se.Code == http.StatusTooManyRequests ||
+			se.Code >= 500
+	}
+	var ue *url.Error
+	if errors.As(err, &ue) {
+		return true
+	}
+	var ne net.Error
+	if errors.As(err, &ne) {
+		return true
+	}
+	return errors.Is(err, io.ErrUnexpectedEOF)
 }
 
 func hashMatches(path, wantSHA string) (bool, error) {

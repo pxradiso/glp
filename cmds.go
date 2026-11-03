@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 	"path/filepath"
 	"strings"
 )
@@ -18,11 +19,11 @@ func cmdSearch(args []string) error {
 		fmt.Printf("nothing matches %q\n", term)
 		return nil
 	}
-	fmt.Printf("%-22s %-12s %8s  %s\n", "APP", "VERSION", "SIZE", "SUMMARY")
+	rows := make([][]string, 0, len(results))
 	for _, a := range results {
-		fmt.Printf("%-22s %-12s %8s  %s\n", a.Name, a.Version,
-			humanBytes(a.Size), truncate(a.Summary, 48))
+		rows = append(rows, []string{a.Name, a.Version, humanBytes(a.Size), truncate(a.Summary, 48)})
 	}
+	writeTable(os.Stdout, "", []string{"APP", "VERSION", "SIZE", "SUMMARY"}, rows, 2)
 	if len(results) > 0 && term != "" {
 		fmt.Printf("\ninstall with: glp install %s\n", results[0].Name)
 	}

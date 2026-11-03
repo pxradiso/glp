@@ -64,7 +64,7 @@ func removeTree(dir string) error {
 		return nil
 	})
 
-	bar := newCountBar(len(paths), true)
+	bar := newCountBar(len(paths))
 	for i := len(paths) - 1; i >= 0; i-- {
 		os.Remove(paths[i])
 		bar.Update(len(paths) - i)
@@ -138,11 +138,13 @@ func cmdList(args []string) error {
 		fmt.Println("no apps installed")
 		return nil
 	}
-	fmt.Printf("%-22s %-12s %10s  %s\n", "APP", "VERSION", "SIZE", "INSTALLED")
+	rows := make([][]string, 0, len(metas))
 	for _, m := range metas {
-		fmt.Printf("%-22s %-12s %10s  %s\n",
-			m.Name, m.Version, humanBytes(m.Size), m.InstalledAt.Format("2006-01-02"))
+		rows = append(rows, []string{
+			m.Name, m.Version, humanBytes(m.Size), m.InstalledAt.Format("2006-01-02"),
+		})
 	}
+	writeTable(os.Stdout, "", []string{"APP", "VERSION", "SIZE", "INSTALLED"}, rows, 2)
 	return nil
 }
 
@@ -161,14 +163,14 @@ func cmdRemove(args []string) error {
 	const steps = 3
 	root := filepath.Join(dataDir(), name)
 
-	s1 := startStep(1, steps, "removing launchers", true)
+	s1 := startStep(1, steps, "removing launchers")
 	for _, b := range m.Bins {
 		// Only remove launchers that really point into this app's tree.
 		removeLauncher(filepath.Join(binDir(), binName(b, b)), root)
 	}
 	s1.Done()
 
-	s2 := startStep(2, steps, "removing menu entry and icon", true)
+	s2 := startStep(2, steps, "removing menu entry and icon")
 	if m.DesktopFile != "" && strings.HasPrefix(filepath.Clean(m.DesktopFile), appsDir()) {
 		os.Remove(m.DesktopFile)
 	}
