@@ -53,6 +53,14 @@ On another distribution glp installs apps that need no system packages, but it
 cannot map missing libraries to a package. The current catalog is x86_64 only, so
 an arm64 build of glp runs but has nothing to install yet.
 
+NixOS is detected, but it has no package manager glp can drive. The static
+binary runs, and unpacking does not need FUSE. To start the extracted apps,
+enable `programs.nix-ld.enable = true` (or run them through `appimage-run`) and
+put `~/.local/bin` on PATH, for example with `environment.localBinInPath = true`.
+If an AppImage does not unpack, install `squashfs-tools` with
+`nix profile install nixpkgs#squashfs-tools`. `glp doctor` still lists missing
+libraries, but Nix owns the store, so glp cannot install them for you.
+
 ## What is in the catalog
 
 65 apps at the moment. This table is a snapshot; the signed catalog is the real

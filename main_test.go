@@ -644,6 +644,29 @@ func TestResolverHint(t *testing.T) {
 	if resolverHint("fedora") == "" {
 		t.Error("every family needs a hint")
 	}
+	if !strings.Contains(resolverHint("nixos"), "nix-ld") {
+		t.Errorf("nixos hint = %q, want nix-ld", resolverHint("nixos"))
+	}
+}
+
+func TestDistroFamily(t *testing.T) {
+	cases := []struct {
+		name      string
+		osRelease string
+		want      string
+	}{
+		{"nixos", "ID=nixos\nID_LIKE=\"\"\n", "nixos"},
+		{"ubuntu", "ID=ubuntu\nID_LIKE=debian\n", "debian"},
+		{"fedora", "ID=fedora\n", "fedora"},
+		{"tumbleweed", "ID=\"opensuse-tumbleweed\"\nID_LIKE=\"opensuse suse\"\n", "suse"},
+		{"endeavouros", "ID=endeavouros\nID_LIKE=arch\n", "arch"},
+		{"unknown", "ID=void\n", ""},
+	}
+	for _, tc := range cases {
+		if got := distroFamilyFrom(tc.osRelease); got != tc.want {
+			t.Errorf("%s = %q, want %q", tc.name, got, tc.want)
+		}
+	}
 }
 
 func TestIconPathStaysInside(t *testing.T) {

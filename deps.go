@@ -19,8 +19,12 @@ func distroFamily() string {
 	if err != nil {
 		return ""
 	}
+	return distroFamilyFrom(string(b))
+}
+
+func distroFamilyFrom(osRelease string) string {
 	var id, like string
-	for _, line := range strings.Split(string(b), "\n") {
+	for _, line := range strings.Split(osRelease, "\n") {
 		k, v, ok := strings.Cut(line, "=")
 		if !ok {
 			continue
@@ -45,6 +49,8 @@ func distroFamily() string {
 			return "suse"
 		case "arch", "manjaro", "endeavouros", "cachyos", "garuda":
 			return "arch"
+		case "nixos":
+			return "nixos"
 		}
 	}
 	return ""
@@ -60,6 +66,8 @@ func familyLabel(fam string) string {
 		return "openSUSE (zypper)"
 	case "arch":
 		return "Arch (pacman)"
+	case "nixos":
+		return "NixOS (nix)"
 	}
 	return "unknown"
 }
@@ -89,6 +97,8 @@ func installCommand(fam string, pkgs []string) ([]string, error) {
 		cmd = append([]string{"zypper", "--non-interactive", "install"}, pkgs...)
 	case "arch":
 		cmd = append([]string{"pacman", "-S", "--noconfirm"}, pkgs...)
+	case "nixos":
+		return nil, errors.New("NixOS packages are managed by Nix; glp cannot install them automatically")
 	default:
 		return nil, fmt.Errorf("unsupported distribution family %q", fam)
 	}

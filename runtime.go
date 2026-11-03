@@ -98,6 +98,8 @@ func resolverHint(fam string) string {
 		return "no package found, sync the file database with `sudo pacman -Fy` and try again"
 	case "debian":
 		return "no package found, `apt-file` is needed to map libraries to packages"
+	case "nixos":
+		return "NixOS: enable programs.nix-ld or use appimage-run, then install the libraries with nix profile"
 	}
 	return "no packages found, install them by hand"
 }
@@ -249,6 +251,9 @@ func fixRuntime(name string, bins []string) error {
 	fam := distroFamily()
 	if fam == "" {
 		return errors.New("unknown distro, install them by hand")
+	}
+	if fam == "nixos" {
+		return errors.New(resolverHint(fam))
 	}
 
 	var pkgs, unresolved []string
