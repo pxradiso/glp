@@ -99,7 +99,7 @@ func resolverHint(fam string) string {
 	case "debian":
 		return "no package found, `apt-file` is needed to map libraries to packages"
 	case "nixos":
-		return "NixOS: enable programs.nix-ld or use appimage-run, then install the libraries with nix profile"
+		return "NixOS: enable programs.nix-ld and add the missing libraries to programs.nix-ld.libraries"
 	}
 	return "no packages found, install them by hand"
 }
