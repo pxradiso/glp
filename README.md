@@ -38,6 +38,21 @@ Then it takes care of the boring part:
 Upgrades work the same way: the new version is unpacked next to the old one, a
 symlink is swapped, and the old tree stays on disk until you remove the app.
 
+## Where it runs
+
+glp itself is one static binary for `linux/amd64` and `linux/arm64`, so it starts
+on any modern Linux. The package-manager integration, used by `glp doctor` and by
+apps with system dependencies, covers four families:
+
+- **Debian/Ubuntu** (apt): Ubuntu, Debian, Linux Mint, Pop!_OS, elementary OS, Zorin OS, Kali, Raspberry Pi OS, KDE neon
+- **Fedora/RHEL** (dnf): Fedora, RHEL, CentOS Stream, Rocky Linux, AlmaLinux, Oracle Linux, Amazon Linux
+- **openSUSE** (zypper): openSUSE Leap, openSUSE Tumbleweed, SLES
+- **Arch** (pacman): Arch, Manjaro, EndeavourOS, CachyOS, Garuda
+
+On another distribution glp installs apps that need no system packages, but it
+cannot map missing libraries to a package. The current catalog is x86_64 only, so
+an arm64 build of glp runs but has nothing to install yet.
+
 ## What is in the catalog
 
 65 apps at the moment. This table is a snapshot; the signed catalog is the real
@@ -125,21 +140,6 @@ catalog is updated.
 
 **Not a distro.** Everything lands under `~/.local` and your system package
 database is left alone, except for the packages you approve.
-
-## Where it runs
-
-glp itself is one static binary for `linux/amd64` and `linux/arm64`, so it starts
-on any modern Linux. The package-manager integration, used by `glp doctor` and by
-apps with system dependencies, covers four families:
-
-- **Debian/Ubuntu** (apt): Ubuntu, Debian, Linux Mint, Pop!_OS, elementary OS, Zorin OS, Kali, Raspberry Pi OS, KDE neon
-- **Fedora/RHEL** (dnf): Fedora, RHEL, CentOS Stream, Rocky Linux, AlmaLinux, Oracle Linux, Amazon Linux
-- **openSUSE** (zypper): openSUSE Leap, openSUSE Tumbleweed, SLES
-- **Arch** (pacman): Arch, Manjaro, EndeavourOS, CachyOS, Garuda
-
-On another distribution glp installs apps that need no system packages, but it
-cannot map missing libraries to a package. The current catalog is x86_64 only, so
-an arm64 build of glp runs but has nothing to install yet.
 
 ## Install
 
