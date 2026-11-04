@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updated": "2026-11-04T08:57:47Z",
+  "updated": "2026-11-04T09:13:27Z",
   "apps": [
     {
       "name": "anki",
@@ -151,6 +151,32 @@
           "AudioVideo",
           "Audio",
           "AudioVideoEditing"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "ayugram",
+      "version": "7.2.9",
+      "summary": "Telegram client with ghost mode and customization",
+      "homepage": "https://github.com/AyuGram/AyuGramDesktop",
+      "license": "GPL-3.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/stillemptyNOW/AyuGram-For-Linux/releases/download/v7.2.9/AyuGram-7.2.9-x86_64.AppImage",
+      "sha256": "49a0547c40ffde2df1489200d38c620b615bf8037aaa21f2d079136e80e9f95d",
+      "size": 103193080,
+      "bins": [
+        "ayugram=AyuGram"
+      ],
+      "desktop": {
+        "name": "AyuGram",
+        "comment": "Telegram client with ghost mode",
+        "icon": "com.ayugram.desktop",
+        "categories": [
+          "Network",
+          "Chat"
         ]
       },
       "deps": {}

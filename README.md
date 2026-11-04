@@ -78,6 +78,7 @@ list, and `glp search` reads it live.
 | `arduino-ide` | Arduino IDE 2 for boards and microcontrollers |
 | `artcraft` | Launcher for the ArtCraft creative suite |
 | `audacity` | Multi-track audio editor and recorder |
+| `ayugram` | Telegram client with ghost mode and customization |
 | `bitwarden` | Password manager with sync |
 | `blender` | 3D modelling, animation and rendering |
 | `brave-browser` | Chromium browser with ad blocking built in |
