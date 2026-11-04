@@ -111,20 +111,20 @@ func reportAppUpdates() bool {
 	}
 	ups := pendingUpdates(idx)
 	if len(ups) == 0 {
-		fmt.Println("apps are up to date")
+		fmt.Println("all apps are up to date")
 		return false
 	}
+	title := fmt.Sprintf("%d apps can be updated", len(ups))
 	if len(ups) == 1 {
-		fmt.Println("1 app can be updated:")
-	} else {
-		fmt.Printf("%d apps can be updated:\n", len(ups))
+		title = "1 app can be updated"
 	}
+	fmt.Printf("%s\n\n", outStyle("1", title))
 	rows := make([][]string, 0, len(ups))
 	for _, u := range ups {
 		rows = append(rows, []string{u.Name, u.Installed, u.Available, humanBytes(u.Size)})
 	}
-	writeTable(os.Stdout, "  ", []string{"APP", "INSTALLED", "AVAILABLE", "SIZE"}, rows, 3)
-	fmt.Println("\n  run: glp upgrade")
+	writeTable(os.Stdout, "  ", []string{"app", "installed", "available", "size"}, rows, 2, 3)
+	fmt.Printf("\nupgrade: %s\n", outStyle("36", "glp upgrade"))
 	return true
 }
 
@@ -170,25 +170,25 @@ func cmdUpdate(args []string) error {
 		return fmt.Errorf("no glp build for %s in the update manifest", platformKey())
 	}
 	if compareVersions(m.Version, version) <= 0 {
-		fmt.Printf("glp %s is up to date\n", version)
+		fmt.Printf("glp %s is up to date\n", outStyle("2", version))
 		return nil
 	}
 
-	fmt.Printf("glp %s is available (you have %s)\n", m.Version, version)
+	fmt.Printf("%s is available (you have %s)\n", outStyle("1", "glp "+m.Version), version)
 	if m.Notes != "" {
-		fmt.Println(m.Notes)
+		fmt.Printf("  %s\n", m.Notes)
 	}
 	if checkOnly {
 		return nil
 	}
 	if !confirmEnv("GLP_YES_UPDATE", "Update now?") {
-		fmt.Println(style("2", "nothing changed"))
+		fmt.Println(outStyle("2", "nothing changed"))
 		return nil
 	}
 	if err := applyUpdate(asset); err != nil {
 		return err
 	}
-	fmt.Printf("glp updated to %s\n", m.Version)
+	fmt.Printf("%s\n", outStyle("32", "glp updated to "+m.Version))
 	return nil
 }
 
@@ -278,7 +278,7 @@ func maybeCheckUpdate(cmd string) {
 	if !ok || compareVersions(m.Version, version) <= 0 {
 		return
 	}
-	fmt.Printf("\nglp %s is available (you have %s)\n", m.Version, version)
+	fmt.Printf("\n%s is available (you have %s)\n", outStyle("1", "glp "+m.Version), version)
 	if !confirmEnv("GLP_YES_UPDATE", "Update now?") {
 		return
 	}
@@ -286,5 +286,5 @@ func maybeCheckUpdate(cmd string) {
 		fmt.Fprintf(os.Stderr, "glp: update failed: %v\n", err)
 		return
 	}
-	fmt.Printf("glp updated to %s\n\n", m.Version)
+	fmt.Printf("%s\n\n", outStyle("32", "glp updated to "+m.Version))
 }

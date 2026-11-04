@@ -203,9 +203,11 @@ did you mean winboat? [Y/n]
 
 $ glp install vscod
 
-2 apps match "vscod":
-  1) vscode               Code editor with debugging and Git…
-  2) vscodium             VS Code without the telemetry
+2 apps match "vscod"
+
+  1  vscode    Code editor with debugging and Git…
+  2  vscodium  VS Code without the telemetry
+
 pick one [1-2, enter to cancel]:
 ```
 
@@ -439,12 +441,13 @@ entry moved ahead, which is what `glp upgrade` would install:
 
 ```console
 $ glp update
-2 apps can be updated:
-  APP                    INSTALLED    AVAILABLE         SIZE
-  discord                0.0.84       0.0.90         98.1 MiB
-  vscode                 1.95.0       1.96.0        124.8 MiB
+2 apps can be updated
 
-  run: glp upgrade
+  app      installed  available      size
+  discord  0.0.84     0.0.90      98.1 MiB
+  vscode   1.95.0     1.96.0     124.8 MiB
+
+upgrade: glp upgrade
 
 glp 0.1.0 is up to date
 ```

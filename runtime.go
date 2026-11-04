@@ -239,7 +239,7 @@ func fixRuntime(name string, bins []string) error {
 		return err
 	}
 	if len(missing) == 0 {
-		fmt.Printf("  %s libraries ok\n", style("32", "✔"))
+		fmt.Printf("  %s libraries ok\n", outStyle("32", "✔"))
 		return nil
 	}
 
@@ -295,7 +295,7 @@ func fixRuntime(name string, bins []string) error {
 	fmt.Println("\nchecking again")
 	missing, _ = missingLibs(bin, versionDir)
 	if len(missing) == 0 {
-		fmt.Printf("  %s libraries ok\n", style("32", "✔"))
+		fmt.Printf("  %s libraries ok\n", outStyle("32", "✔"))
 	} else {
 		fmt.Printf("  still missing: %s\n", strings.Join(missing, " "))
 	}
@@ -317,11 +317,14 @@ func cmdDoctor(args []string) error {
 	}
 
 	if len(targets) == 0 {
-		fmt.Println("no apps installed")
+		fmt.Println("no apps installed, nothing to check")
 		return nil
 	}
+	if len(args) == 0 {
+		fmt.Println(outStyle("2", fmt.Sprintf("checking %d apps", len(targets))))
+	}
 	for _, m := range targets {
-		fmt.Printf("\n%s %s\n", style("1", m.Name), m.Version)
+		fmt.Printf("\n%s %s\n", outStyle("1", m.Name), outStyle("2", m.Version))
 		if err := fixRuntime(m.Name, m.Bins); err != nil {
 			fmt.Fprintf(os.Stderr, "glp: %v\n", err)
 		}

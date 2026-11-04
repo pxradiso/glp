@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 func cmdSearch(args []string) error {
@@ -61,51 +62,55 @@ func cmdInfo(args []string) error {
 		return err
 	}
 
-	fmt.Printf("%s %s\n", app.Name, app.Version)
+	fmt.Printf("%s %s\n", outStyle("1", app.Name), outStyle("2", app.Version))
 	if app.Summary != "" {
 		fmt.Printf("  %s\n", app.Summary)
 	}
+	fmt.Println()
 
-	facts := []string{humanBytes(app.Size)}
+	facts := [][]string{{"size", humanBytes(app.Size)}}
 	if app.License != "" {
-		facts = append(facts, app.License)
+		facts = append(facts, []string{"license", app.License})
 	}
-	facts = append(facts, app.Archs...)
-	fmt.Printf("\n  %s\n", strings.Join(facts, ", "))
-	if app.Homepage != "" {
-		fmt.Printf("  %s\n", app.Homepage)
+	if len(app.Archs) > 0 {
+		facts = append(facts, []string{"arch", strings.Join(app.Archs, ", ")})
 	}
-	if names := commandNames(app.Bins); len(names) > 0 {
-		fmt.Printf("  command: %s\n", strings.Join(names, ", "))
-	}
+	source := downloadLabel(app)
 	if app.Build != nil {
-		fmt.Printf("  builds from source\n")
+		source = "built from source"
 	}
-	if app.Itch != nil {
-		fmt.Printf("  downloads from itch.io\n")
+	facts = append(facts, []string{"source", source})
+	if names := commandNames(app.Bins); len(names) > 0 {
+		facts = append(facts, []string{"command", strings.Join(names, ", ")})
 	}
-	fmt.Printf("  sha256 %s\n", app.SHA256)
+	if app.Homepage != "" {
+		facts = append(facts, []string{"homepage", app.Homepage})
+	}
+	facts = append(facts, []string{"sha256", app.SHA256})
+	writeTable(os.Stdout, "  ", nil, facts)
 
 	fam := distroFamily()
 	if len(app.Deps) == 0 {
-		fmt.Printf("\n  no extra system packages\n")
+		fmt.Printf("\n  no system packages needed\n")
 	} else if pkgs := app.Deps[fam]; len(pkgs) > 0 {
-		fmt.Printf("\n  system packages (%s):\n", fam)
+		fmt.Printf("\n  system packages (%s)\n", fam)
+		rows := make([][]string, 0, len(pkgs))
 		for _, p := range pkgs {
 			status := "missing"
 			if isInstalled(fam, p) {
 				status = "installed"
 			}
-			fmt.Printf("    %s, %s\n", p, status)
+			rows = append(rows, []string{p, status})
 		}
+		writeTable(os.Stdout, "    ", nil, rows)
 	} else {
 		fmt.Printf("\n  no system packages for %s\n", fam)
 	}
 
 	if m := readMeta(app.Name); m != nil {
-		fmt.Printf("\n  installed %s, %s\n", m.Version, m.InstalledAt.Format("2006-01-02"))
+		fmt.Printf("\n  installed  %s on %s\n", m.Version, m.InstalledAt.Format("2006-01-02"))
 		if compareVersions(app.Version, m.Version) > 0 {
-			fmt.Printf("  %s is available, run `glp upgrade %s`\n", app.Version, app.Name)
+			fmt.Printf("  available  %s, run: %s\n", app.Version, outStyle("36", "glp upgrade "+app.Name))
 		}
 	}
 	return nil
@@ -125,7 +130,7 @@ func cmdIndex(args []string) error {
 		if err != nil {
 			return err
 		}
-		fmt.Printf("catalog refreshed, %d apps\n", len(idx.Apps))
+		fmt.Println(outStyle("1", fmt.Sprintf("catalog refreshed, %d apps", len(idx.Apps))))
 		pruneDownloads(idx)
 		return nil
 	case "set":
@@ -136,20 +141,35 @@ func cmdIndex(args []string) error {
 		if err := writeFileAtomic(filepath.Join(configDir(), "config.json"), append(b, '\n')); err != nil {
 			return err
 		}
-		fmt.Printf("catalog source set to %s\n", args[1])
-		fmt.Printf("  run `glp index refresh` to fetch it\n")
+		fmt.Println(outStyle("1", "catalog source changed"))
+		fmt.Println()
+		writeTable(os.Stdout, "  ", nil, [][]string{
+			{"source", args[1]},
+			{"next", outStyle("36", "glp index refresh")},
+		})
 		return nil
 	case "show":
 		idx, err := loadIndex(false)
 		if err != nil {
 			return err
 		}
-		fmt.Printf("%d apps, updated %s\n", len(idx.Apps), idx.Updated)
-		fmt.Printf("  source  %s\n", indexURL())
-		fmt.Printf("  cache   %s\n", indexCache())
+		updated := "unknown"
+		if t, err := time.Parse(time.RFC3339, idx.Updated); err == nil {
+			updated = t.Local().Format("2006-01-02 15:04")
+		} else if idx.Updated != "" {
+			updated = idx.Updated
+		}
+		fmt.Println(outStyle("1", "catalog"))
+		fmt.Println()
+		writeTable(os.Stdout, "  ", nil, [][]string{
+			{"apps", fmt.Sprintf("%d", len(idx.Apps))},
+			{"updated", updated},
+			{"source", indexURL()},
+			{"cache", indexCache()},
+		})
 		return nil
 	}
-	return fmt.Errorf("unknown subcommand %q (try: glp index refresh)", sub)
+	return fmt.Errorf("unknown index subcommand %q (use: refresh, show, set)", sub)
 }
 
 func commandNames(bins []string) []string {

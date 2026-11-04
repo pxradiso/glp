@@ -138,13 +138,19 @@ func cmdList(args []string) error {
 		fmt.Println("no apps installed")
 		return nil
 	}
+	title := fmt.Sprintf("%d apps installed", len(metas))
+	if len(metas) == 1 {
+		title = "1 app installed"
+	}
+	fmt.Printf("%s\n\n", outStyle("1", title))
+
 	rows := make([][]string, 0, len(metas))
 	for _, m := range metas {
 		rows = append(rows, []string{
 			m.Name, m.Version, humanBytes(m.Size), m.InstalledAt.Format("2006-01-02"),
 		})
 	}
-	writeTable(os.Stdout, "", []string{"APP", "VERSION", "SIZE", "INSTALLED"}, rows, 2)
+	writeTable(os.Stdout, "  ", []string{"app", "version", "size", "installed"}, rows, 2)
 	return nil
 }
 
@@ -160,6 +166,9 @@ func cmdRemove(args []string) error {
 	if m == nil {
 		return fmt.Errorf("%s is not installed", name)
 	}
+	fmt.Printf("%s %s\n", outStyle("1", name), outStyle("2", m.Version))
+	fmt.Println()
+
 	const steps = 3
 	root := filepath.Join(dataDir(), name)
 
@@ -185,7 +194,11 @@ func cmdRemove(args []string) error {
 		return err
 	}
 
-	fmt.Printf("%s removed\n", name)
+	if m.Size > 0 {
+		fmt.Printf("%s removed, %s freed\n", name, humanBytes(m.Size))
+	} else {
+		fmt.Printf("%s removed\n", name)
+	}
 	return nil
 }
 
@@ -218,7 +231,7 @@ func cmdUpgrade(args []string) error {
 	}
 
 	if len(targets) == 0 {
-		fmt.Println("everything is up to date")
+		fmt.Println("all apps are up to date")
 		return nil
 	}
 	for _, app := range targets {
@@ -226,11 +239,15 @@ func cmdUpgrade(args []string) error {
 		if m := readMeta(app.Name); m != nil {
 			cur = m.Version
 		}
-		if cur == app.Version {
+		switch {
+		case cur == app.Version:
 			fmt.Printf("%s is already at %s\n", app.Name, cur)
 			continue
+		case cur == "":
+			fmt.Printf("\n%s is not installed, installing %s\n", outStyle("1", app.Name), outStyle("2", app.Version))
+		default:
+			fmt.Printf("\n%s %s -> %s\n", outStyle("1", app.Name), outStyle("2", cur), outStyle("2", app.Version))
 		}
-		fmt.Printf("\n%s: %s -> %s\n", app.Name, cur, app.Version)
 		if err := cmdInstall([]string{app.Name}); err != nil {
 			return err
 		}

@@ -276,14 +276,29 @@ func chooseList(query string, names, details []string) (int, error) {
 	if shown > suggestMax {
 		shown = suggestMax
 	}
-	fmt.Fprintf(os.Stderr, "\n%d apps match %q:\n", len(names), query)
+	title := fmt.Sprintf("%d apps match %q", len(names), query)
+	if len(names) == 1 {
+		title = fmt.Sprintf("1 app matches %q", query)
+	}
+	fmt.Fprintf(os.Stderr, "\n%s\n\n", title)
+
+	withDetails := false
 	for i := 0; i < shown; i++ {
-		if d := strings.TrimSpace(details[i]); d != "" {
-			fmt.Fprintf(os.Stderr, "  %d) %-20s %s\n", i+1, names[i], truncate(d, 38))
-		} else {
-			fmt.Fprintf(os.Stderr, "  %d) %s\n", i+1, names[i])
+		if strings.TrimSpace(details[i]) != "" {
+			withDetails = true
+			break
 		}
 	}
+	rows := make([][]string, 0, shown)
+	for i := 0; i < shown; i++ {
+		if withDetails {
+			rows = append(rows, []string{strconv.Itoa(i + 1), names[i], truncate(strings.TrimSpace(details[i]), 40)})
+		} else {
+			rows = append(rows, []string{strconv.Itoa(i + 1), names[i]})
+		}
+	}
+	writeTable(os.Stderr, "  ", nil, rows, 0)
+
 	if shown < len(names) {
 		fmt.Fprintf(os.Stderr, "  ... and %d more, be more specific\n", len(names)-shown)
 	}
@@ -292,7 +307,7 @@ func chooseList(query string, names, details []string) (int, error) {
 		return 0, fmt.Errorf("%q is ambiguous, use the full name", query)
 	}
 
-	fmt.Fprintf(os.Stderr, "pick one [1-%d, enter to cancel]: ", shown)
+	fmt.Fprintf(os.Stderr, "\npick one [1-%d, enter to cancel]: ", shown)
 	line, err := stdinReader.ReadString('\n')
 	answer := strings.TrimSpace(line)
 	if answer == "" {

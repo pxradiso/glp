@@ -56,7 +56,7 @@ func main() {
 			if msg == "" {
 				msg = "nothing changed"
 			}
-			fmt.Fprintln(os.Stderr, style("2", msg))
+			fmt.Fprintln(os.Stderr, errStyle("2", msg))
 			os.Exit(1)
 		}
 		fmt.Fprintf(os.Stderr, "glp: %v\n", err)
@@ -104,6 +104,14 @@ func usage() {
 // piping `glp help` into a file stays clean.
 func outStyle(code, s string) string {
 	if !animations() || !isTTY(os.Stdout) {
+		return s
+	}
+	return style(code, s)
+}
+
+// errStyle is outStyle for messages written to stderr.
+func errStyle(code, s string) string {
+	if !animations() || !isTTY(os.Stderr) {
 		return s
 	}
 	return style(code, s)

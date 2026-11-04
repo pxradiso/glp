@@ -39,10 +39,12 @@ func cmdInstall(args []string) error {
 	}
 	if m := readMeta(app.Name); m != nil && compareVersions(m.Version, app.Version) >= 0 {
 		if binsIntact(m) {
-			fmt.Printf("%s %s is already installed (use `glp upgrade`)\n", app.Name, m.Version)
+			fmt.Printf("%s %s is already installed, run: %s\n",
+				outStyle("1", app.Name), outStyle("2", m.Version), outStyle("36", "glp upgrade "+app.Name))
 			return nil
 		}
-		fmt.Printf("%s %s is installed but its launchers are missing, repairing\n", app.Name, m.Version)
+		fmt.Printf("%s %s is installed but its launchers are missing, repairing\n",
+			outStyle("1", app.Name), outStyle("2", m.Version))
 	}
 
 	fmt.Printf("\n%s %s\n", outStyle("1", app.Name), outStyle("2", app.Version))
