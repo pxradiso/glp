@@ -484,13 +484,14 @@ the code.
 ### Making a release
 
 ```console
-$ VERSION=0.2.0 ./scripts/release.sh
+$ VERSION=0.2.0 NOTES="faster catalog refresh" ./scripts/release.sh
 ```
 
 This builds `linux/amd64` and `linux/arm64`, writes `dist/update.json` with the URL
-and checksum of each, and signs it. Upload the two binaries, `update.json` and
-`update.json.sig` to the `v0.2.0` GitHub release, and the default
-`releases/latest/download/update.json` URL serves the new version.
+and checksum of each, and signs it. `NOTES` is optional and shown by `glp update`.
+Upload the two binaries, `update.json` and `update.json.sig` to the `v0.2.0`
+GitHub release, and the default `releases/latest/download/update.json` URL serves
+the new version.
 
 ## Signing
 
