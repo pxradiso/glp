@@ -9,8 +9,10 @@ No daemon, no FUSE, no root by default, no runtime to install.
 $ glp install appimagetool
 appimagetool 1.9.1
   Build an AppImage from an AppDir
+
   size    14.4 MiB
-  sha256  ed4ce84f…
+  source  appimagetool-x86_64.AppImage
+  sha256  ed4ce84f0d9caff6…
 
 Install? [Y/n]
   [1/4]  downloading appimagetool-x86_64.AppImage
@@ -280,7 +282,7 @@ same yes installs them:
 
 ```console
 $ glp install fnf-game
-  needs   vlc (root)
+  packages  vlc (root)
 
 Install? [Y/n]
 

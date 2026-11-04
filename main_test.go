@@ -267,6 +267,17 @@ func TestParseContentRange(t *testing.T) {
 	}
 }
 
+func TestShortDigest(t *testing.T) {
+	short := strings.Repeat("a", 16)
+	if got := shortDigest(short); got != short {
+		t.Errorf("shortDigest kept %q, want %q", got, short)
+	}
+	long := strings.Repeat("b", 64)
+	if got, want := shortDigest(long), strings.Repeat("b", 16)+"…"; got != want {
+		t.Errorf("shortDigest = %q, want %q", got, want)
+	}
+}
+
 func TestHumanRateAndDuration(t *testing.T) {
 	if got := humanRate(512); got != "512 B/s" {
 		t.Errorf("humanRate(512) = %q", got)

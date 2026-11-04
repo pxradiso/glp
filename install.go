@@ -45,21 +45,27 @@ func cmdInstall(args []string) error {
 		fmt.Printf("%s %s is installed but its launchers are missing, repairing\n", app.Name, m.Version)
 	}
 
-	fmt.Printf("\n%s %s\n", app.Name, app.Version)
+	fmt.Printf("\n%s %s\n", outStyle("1", app.Name), outStyle("2", app.Version))
 	if app.Summary != "" {
-		fmt.Printf("  %s\n", truncate(app.Summary, 52))
+		fmt.Printf("  %s\n", app.Summary)
 	}
-	fmt.Printf("  size    %s\n", humanBytes(app.Size))
-	fmt.Printf("  sha256  %s\n", app.SHA256)
+	fmt.Println()
+
 	// The packages the app cannot start without are part of the deal, so they
 	// are named here and installed by the same yes.
 	deps, err := missingDeps(app)
 	if err != nil {
 		return err
 	}
-	if len(deps) > 0 {
-		fmt.Printf("  needs   %s (root)\n", strings.Join(deps, ", "))
+	facts := [][]string{
+		{"size", humanBytes(app.Size)},
+		{"source", downloadLabel(app)},
+		{"sha256", shortDigest(app.SHA256)},
 	}
+	if len(deps) > 0 {
+		facts = append(facts, []string{"packages", strings.Join(deps, ", ") + " (root)"})
+	}
+	writeTable(os.Stdout, "  ", nil, facts)
 	fmt.Println()
 	if !confirm("Install?") {
 		return &cancel{msg: "nothing installed"}

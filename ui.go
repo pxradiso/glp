@@ -163,6 +163,15 @@ func humanBytes(n int64) string {
 	return fmt.Sprintf("%.1f %ciB", float64(n)/float64(div), "KMGTPE"[exp])
 }
 
+// shortDigest keeps the install prompt readable; `glp info` shows the full
+// SHA-256 when you need to check it by hand.
+func shortDigest(s string) string {
+	if len(s) <= 16 {
+		return s
+	}
+	return s[:16] + "…"
+}
+
 func humanRate(bytesPerSecond float64) string {
 	return humanBytes(int64(bytesPerSecond)) + "/s"
 }
