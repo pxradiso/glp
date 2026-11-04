@@ -181,8 +181,9 @@ func humanDuration(d time.Duration) string {
 }
 
 // writeTable keeps columns aligned without counting ANSI escapes. indent is
-// prepended to every line, and rightCols lists the columns that should be
-// right aligned (usually size columns).
+// prepended to every line, rightCols lists the columns that should be right
+// aligned (usually size columns), and an empty headers slice skips the header
+// row.
 func writeTable(w io.Writer, indent string, headers []string, rows [][]string, rightCols ...int) {
 	right := make(map[int]bool, len(rightCols))
 	for _, c := range rightCols {
@@ -219,7 +220,9 @@ func writeTable(w io.Writer, indent string, headers []string, rows [][]string, r
 		}
 		fmt.Fprintln(tw)
 	}
-	write(headers)
+	if len(headers) > 0 {
+		write(headers)
+	}
 	for _, row := range rows {
 		write(row)
 	}

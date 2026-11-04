@@ -65,19 +65,46 @@ func main() {
 }
 
 func usage() {
-	fmt.Print(`glp - install desktop apps on any distro
+	fmt.Printf("\n%s\n", outStyle("1", "glp "+version))
+	fmt.Printf("%s\n", outStyle("2", "install desktop apps from a signed catalog"))
+	fmt.Printf("%s\n\n", outStyle("2", "usage: glp <command> [args]"))
 
-  glp search <term>
-  glp info <app>
-  glp install <app>[@ver]
-  glp list
-  glp upgrade [app]
-  glp remove <app>
-  glp doctor [app]
-  glp update [--check]
-  glp index refresh
-  glp index show
-  glp index set <url>
-  glp version
-`)
+	section := func(title string, rows [][]string) {
+		fmt.Println(outStyle("1", title))
+		writeTable(os.Stdout, "  ", nil, rows)
+		fmt.Println()
+	}
+
+	section("Find apps", [][]string{
+		{"search <term>", "search names, commands and summaries"},
+		{"info <app>", "version, size, checksum and system packages"},
+		{"list", "show installed apps"},
+	})
+	section("Install and manage", [][]string{
+		{"install <app>[@ver]", "download, verify, unpack and add to the menu"},
+		{"upgrade [app]", "update one app or all installed apps"},
+		{"remove <app>", "remove launchers, menu entry, icon and files"},
+		{"doctor [app]", "find missing libraries and install them"},
+	})
+	section("Catalog", [][]string{
+		{"index refresh", "re-fetch and verify the signed catalog"},
+		{"index show", "print the catalog source and cache paths"},
+		{"index set <url>", "use another catalog source"},
+	})
+	section("Updates and help", [][]string{
+		{"update [--check]", "check glp and installed apps for updates"},
+		{"version", "print the version"},
+		{"help", "print this menu"},
+	})
+
+	fmt.Println(outStyle("2", "Short names: s, i, ls, rm, up, fix"))
+}
+
+// outStyle only colours output that really goes to a terminal on stdout, so
+// piping `glp help` into a file stays clean.
+func outStyle(code, s string) string {
+	if !animations() || !isTTY(os.Stdout) {
+		return s
+	}
+	return style(code, s)
 }
