@@ -19,13 +19,31 @@ func cmdSearch(args []string) error {
 		fmt.Printf("nothing matches %q\n", term)
 		return nil
 	}
+
+	var title string
+	switch {
+	case term == "":
+		title = fmt.Sprintf("%d apps", len(results))
+	case len(results) == 1:
+		title = fmt.Sprintf("1 app matches %q", term)
+	default:
+		title = fmt.Sprintf("%d apps match %q", len(results), term)
+	}
+	fmt.Printf("%s\n\n", outStyle("1", title))
+
 	rows := make([][]string, 0, len(results))
 	for _, a := range results {
-		rows = append(rows, []string{a.Name, a.Version, humanBytes(a.Size), truncate(a.Summary, 48)})
+		rows = append(rows, []string{a.Name, a.Version, humanBytes(a.Size), truncate(a.Summary, 56)})
 	}
-	writeTable(os.Stdout, "", []string{"APP", "VERSION", "SIZE", "SUMMARY"}, rows, 2)
-	if len(results) > 0 && term != "" {
-		fmt.Printf("\ninstall with: glp install %s\n", results[0].Name)
+	writeTable(os.Stdout, "  ", []string{"app", "version", "size", "what it is"}, rows, 2)
+
+	if term == "" {
+		return nil
+	}
+	if len(results) == 1 {
+		fmt.Printf("\ninstall: %s\n", outStyle("36", "glp install "+results[0].Name))
+	} else {
+		fmt.Printf("\ninstall one: %s\n", outStyle("36", "glp install <app>"))
 	}
 	return nil
 }
