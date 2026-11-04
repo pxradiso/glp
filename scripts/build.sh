@@ -3,7 +3,7 @@
 set -eu
 cd "$(dirname "$0")/.."
 
-VERSION="${VERSION:-0.1.1}"
+VERSION="${VERSION:-0.1.2}"
 OUT="${1:-glp}"
 LDFLAGS="-s -w -X main.version=$VERSION"
 

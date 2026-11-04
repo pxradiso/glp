@@ -105,7 +105,7 @@ build_from_source() {
 		version=$(cd "$script_dir" && git describe --tags --abbrev=0 2>/dev/null |
 			sed 's/^v//') || version=
 	fi
-	[ -n "$version" ] || version=0.1.1
+	[ -n "$version" ] || version=0.1.2
 
 	say "building glp $version"
 	(cd "$script_dir" &&
