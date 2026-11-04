@@ -24,6 +24,7 @@ import (
 	"sync/atomic"
 	"testing"
 	"time"
+	"unicode/utf8"
 )
 
 func TestCompareVersions(t *testing.T) {
@@ -240,6 +241,23 @@ func TestBarCells(t *testing.T) {
 	}
 	if barCells(999) != barCells(barWidth) {
 		t.Error("head above width should clamp to full")
+	}
+}
+
+// Colour styles the filled and empty halves separately, so each half must be
+// valid UTF-8 on its own. Slicing by cell count used to cut block runes in half.
+func TestBarPartsStayWhole(t *testing.T) {
+	for head := -1; head <= barWidth+1; head++ {
+		filled, empty := barParts(head)
+		if !utf8.ValidString(filled) || !utf8.ValidString(empty) {
+			t.Fatalf("head %d split a block character: %q / %q", head, filled, empty)
+		}
+		if got := utf8.RuneCountInString(filled); got != min(max(head, 0), barWidth) {
+			t.Errorf("head %d: filled %d cells", head, got)
+		}
+		if got := utf8.RuneCountInString(filled) + utf8.RuneCountInString(empty); got != barWidth {
+			t.Errorf("head %d: bar width %d", head, got)
+		}
 	}
 }
 

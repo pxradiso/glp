@@ -29,30 +29,32 @@ func style(code, s string) string {
 	return "\033[" + code + "m" + s + "\033[0m"
 }
 
+// barParts returns the filled and empty halves as separate strings. Colour
+// needs them apart, and slicing a bar string by cell count would split the
+// multi-byte block characters in half.
+func barParts(head int) (filled, empty string) {
+	if head < 0 {
+		head = 0
+	}
+	if head > barWidth {
+		head = barWidth
+	}
+	return strings.Repeat("█", head), strings.Repeat("░", barWidth-head)
+}
+
 // barCells is the plain bar, so it can be tested without a terminal. The
 // caller only adds colour.
 func barCells(head int) string {
-	if head < 0 {
-		head = 0
-	}
-	if head > barWidth {
-		head = barWidth
-	}
-	return strings.Repeat("█", head) + strings.Repeat("░", barWidth-head)
+	filled, empty := barParts(head)
+	return filled + empty
 }
 
 func renderBar(head int) string {
-	cells := barCells(head)
+	filled, empty := barParts(head)
 	if !animations() {
-		return cells
+		return filled + empty
 	}
-	if head < 0 {
-		head = 0
-	}
-	if head > barWidth {
-		head = barWidth
-	}
-	return style("36", cells[:head]) + style("2", cells[head:])
+	return style("36", filled) + style("2", empty)
 }
 
 var spinnerFrames = []string{"⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"}
