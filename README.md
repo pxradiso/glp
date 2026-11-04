@@ -2,6 +2,8 @@
 
 glp is a Go CLI that installs Linux desktop apps from a signed catalog.
 
+[glp](assets/glp.mp4)
+
 Install desktop apps on Ubuntu, Debian, Fedora and friends with one command.
 No daemon, no FUSE, no root by default, no runtime to install.
 
