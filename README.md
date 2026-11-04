@@ -67,6 +67,85 @@ install `squashfs-tools` with
 libraries, but Nix owns the store, so glp cannot install them for you; add them
 to `programs.nix-ld.libraries` when needed.
 
+
+## Install
+
+```console
+$ curl -fsSL https://raw.githubusercontent.com/pxradiso/glp/main/install.sh | sh
+```
+
+The script works out whether you are on `linux/amd64` or `linux/arm64`, checks
+the release manifest's ed25519 signature with the key embedded in it, verifies
+the binary's SHA-256, and puts it in `~/.local/bin`. No root needed. Set
+`PREFIX=/usr/local` for a system-wide copy, which will ask for root.
+
+From a checkout, the same script builds what you are looking at:
+
+```console
+$ ./install.sh              # build this checkout
+$ ./install.sh --release    # install the latest signed release instead
+```
+
+Source builds need Go 1.27 or newer. The result is one static binary.
+
+## Commands
+
+| Command | |
+|---|---|
+| `glp search <term>` | fuzzy search over names, labels and commands |
+| `glp info <app>` | version, size, checksum, dependencies |
+| `glp install <app>[@ver]` | download, verify, extract, integrate |
+| `glp list` | installed apps |
+| `glp upgrade [app]` | upgrade one app or everything |
+| `glp remove <app>` | delete binaries, menu entry, icon, files |
+| `glp doctor [app]` | find missing libraries and install them |
+| `glp update [--check]` | check glp and installed apps for updates |
+| `glp index refresh` | re-fetch and re-verify the catalog |
+| `glp index show` | print the source and cache paths |
+| `glp index set <url>` | switch to another catalog source |
+| `glp version` | print the version |
+
+A few short aliases exist because typing is not free: `glp s` for search,
+`glp i` or `glp add` for install, `glp ls`, `glp rm` or `glp uninstall`,
+`glp up` for upgrade, `glp fix` for doctor.
+
+Names are forgiving. An exact name always wins and never prompts. Otherwise a
+unique near miss asks first, and several near misses become a numbered list:
+
+```console
+$ glp install win
+did you mean winboat? [Y/n]
+
+$ glp install vscod
+
+2 apps match "vscod"
+
+  1  vscode    Code editor with debugging and Git…
+  2  vscodium  VS Code without the telemetry
+
+pick one [1-2, enter to cancel]:
+```
+
+Matching looks at the catalog name, the menu label and the launcher command, so
+`code` finds vscode and `chrome` finds chromium. With `GLP_YES=1` a single
+candidate is accepted and an ambiguous one is refused, so unattended runs never
+guess.
+
+Environment:
+
+- `GLP_INDEX_URL` for the catalog location. `https://`, `file://` and plain paths all work.
+- `GLP_TRUST_KEY` to override the embedded public key (development only).
+- `GLP_YES=1` skips the install confirmation.
+- `GLP_YES_ROOT=1` approves root package installs separately, which is what an
+  unattended `GLP_YES=1` run needs before it will touch `sudo`.
+- `GLP_UPDATE_URL` for the release manifest, if you host your own.
+- `GLP_YES_UPDATE=1` skips the update prompt, never the catalog prompt.
+- `GLP_NO_UPDATE_CHECK=1` turns off the automatic daily check.
+- `GLP_PLAIN=1` disables colour and animation, which also happens by itself
+  when stderr is not a terminal.
+- `NO_COLOR=1` does the same for scripts that already use that convention.
+
+
 ## What is in the catalog
 
 65 apps at the moment. This table is a snapshot; the signed catalog is the real
@@ -156,83 +235,6 @@ catalog is updated.
 
 **Not a distro.** Everything lands under `~/.local` and your system package
 database is left alone, except for the packages you approve.
-
-## Install
-
-```console
-$ curl -fsSL https://raw.githubusercontent.com/pxradiso/glp/main/install.sh | sh
-```
-
-The script works out whether you are on `linux/amd64` or `linux/arm64`, checks
-the release manifest's ed25519 signature with the key embedded in it, verifies
-the binary's SHA-256, and puts it in `~/.local/bin`. No root needed. Set
-`PREFIX=/usr/local` for a system-wide copy, which will ask for root.
-
-From a checkout, the same script builds what you are looking at:
-
-```console
-$ ./install.sh              # build this checkout
-$ ./install.sh --release    # install the latest signed release instead
-```
-
-Source builds need Go 1.27 or newer. The result is one static binary.
-
-## Commands
-
-| Command | |
-|---|---|
-| `glp search <term>` | fuzzy search over names, labels and commands |
-| `glp info <app>` | version, size, checksum, dependencies |
-| `glp install <app>[@ver]` | download, verify, extract, integrate |
-| `glp list` | installed apps |
-| `glp upgrade [app]` | upgrade one app or everything |
-| `glp remove <app>` | delete binaries, menu entry, icon, files |
-| `glp doctor [app]` | find missing libraries and install them |
-| `glp update [--check]` | check glp and installed apps for updates |
-| `glp index refresh` | re-fetch and re-verify the catalog |
-| `glp index show` | print the source and cache paths |
-| `glp index set <url>` | switch to another catalog source |
-| `glp version` | print the version |
-
-A few short aliases exist because typing is not free: `glp s` for search,
-`glp i` or `glp add` for install, `glp ls`, `glp rm` or `glp uninstall`,
-`glp up` for upgrade, `glp fix` for doctor.
-
-Names are forgiving. An exact name always wins and never prompts. Otherwise a
-unique near miss asks first, and several near misses become a numbered list:
-
-```console
-$ glp install win
-did you mean winboat? [Y/n]
-
-$ glp install vscod
-
-2 apps match "vscod"
-
-  1  vscode    Code editor with debugging and Git…
-  2  vscodium  VS Code without the telemetry
-
-pick one [1-2, enter to cancel]:
-```
-
-Matching looks at the catalog name, the menu label and the launcher command, so
-`code` finds vscode and `chrome` finds chromium. With `GLP_YES=1` a single
-candidate is accepted and an ambiguous one is refused, so unattended runs never
-guess.
-
-Environment:
-
-- `GLP_INDEX_URL` for the catalog location. `https://`, `file://` and plain paths all work.
-- `GLP_TRUST_KEY` to override the embedded public key (development only).
-- `GLP_YES=1` skips the install confirmation.
-- `GLP_YES_ROOT=1` approves root package installs separately, which is what an
-  unattended `GLP_YES=1` run needs before it will touch `sudo`.
-- `GLP_UPDATE_URL` for the release manifest, if you host your own.
-- `GLP_YES_UPDATE=1` skips the update prompt, never the catalog prompt.
-- `GLP_NO_UPDATE_CHECK=1` turns off the automatic daily check.
-- `GLP_PLAIN=1` disables colour and animation, which also happens by itself
-  when stderr is not a terminal.
-- `NO_COLOR=1` does the same for scripts that already use that convention.
 
 ## Apps that only ship source code
 
