@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updated": "2026-11-03T11:38:13Z",
+  "updated": "2026-11-04T08:57:47Z",
   "apps": [
     {
       "name": "anki",
@@ -1034,6 +1034,31 @@
         "icon": "lightcraft",
         "categories": [
           "Graphics"
+        ]
+      },
+      "deps": {}
+    },
+    {
+      "name": "mocktail",
+      "version": "1.0.4",
+      "summary": "Play Roblox on Linux",
+      "homepage": "https://github.com/komaruworld/mocktail",
+      "license": "Apache-2.0",
+      "archs": [
+        "x86_64"
+      ],
+      "url": "https://github.com/komaruworld/mocktail/releases/download/1.0.4/Mocktail-1.0.4-x86_64.AppImage",
+      "sha256": "07f1c93a00809b436d2f0bb5609f88be20ec3bf7126f253e6e81186d6cb54efe",
+      "size": 164710797,
+      "bins": [
+        "mocktail"
+      ],
+      "desktop": {
+        "name": "Mocktail",
+        "comment": "Play Roblox on Linux",
+        "icon": "space.bigrat.mocktail",
+        "categories": [
+          "Game"
         ]
       },
       "deps": {}

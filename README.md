@@ -112,6 +112,7 @@ list, and `glp search` reads it live.
 | `lazygit` | Terminal UI for git |
 | `librewolf` | Firefox fork tuned for privacy |
 | `lightcraft` | Photo library and raw developer |
+| `mocktail` | Play Roblox on Linux |
 | `musescore` | Scorewriter for composing and printing sheet music |
 | `neovim` | Modal text editor for the terminal |
 | `obsidian` | Markdown knowledge base and note taking |
