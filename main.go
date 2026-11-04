@@ -66,7 +66,7 @@ func main() {
 
 func usage() {
 	fmt.Printf("\n%s\n", outStyle("1", "glp "+version))
-	fmt.Printf("%s\n", outStyle("2", "install desktop apps from a signed catalog"))
+	fmt.Printf("%s\n", outStyle("2", "install desktop apps easily from a signed catalog"))
 	fmt.Printf("%s\n\n", outStyle("2", "usage: glp <command> [args]"))
 
 	section := func(title string, rows [][]string) {
